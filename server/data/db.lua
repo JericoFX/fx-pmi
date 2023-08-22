@@ -15,7 +15,7 @@ function db.GrabByCitizenID(id)
     local _id = util.type(id,"string")
     --https://overextended.github.io/docs/oxmysql/Usage/single
     local variable = MySQL.single.await(QUERY_STRINGS.PlayerByID, {_id})
-    if not variable or #variable == 0 or table.type(variable) == "empty" then return false end
+    if not variable  then return false end
     return variable
 end
 
@@ -26,7 +26,8 @@ function db.GrabByPlate(plate)
     if not plate then return end
     local _plate = util.type(plate,"string")
     local variable = MySQL.single.await(QUERY_STRINGS.VehicleByPlate, {_plate})
-    if not variable or #variable == 0 or table.type(variable) == "empty" then return false end
+    if not variable then return false end
     return variable
 end
+
 return db

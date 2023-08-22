@@ -8,6 +8,8 @@ description 'A Police Management Interface created with svelte'
 license 'GNU'
 author 'JericoFX'
 
+ui_page "ui/index.html"
+
 client_script "client/init.lua"
 
 shared_script '@ox_lib/init.lua'
@@ -20,4 +22,7 @@ server_script {
 files {
     'config/client.lua',
     "client/data/*.lua",
+    'ui/*.js',
+    'ui/*.css',
+    'ui/index.html'
 }

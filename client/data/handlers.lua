@@ -1,6 +1,7 @@
 return function()
-    AddStateBagChangeHandler("vehicle",nil,function(a,s,d,f,g)
-        
+    AddStateBagChangeHandler("pmi:vehicle",nil,function(a,s,value,f,g)
+   
+        print("From State Bag: ",GetEntityFromStateBagName(a))
     end)
 
 end

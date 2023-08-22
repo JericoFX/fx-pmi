@@ -2,7 +2,7 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 local db = require "server.data.db"
 local Config = require "config.server"
 local current = "pmi:%s"
-local updateInformation = {"vehicle","duty","callsign"}
+local updateInformation = {vehicle = true,duty = true,callsign = true}
 
 local function checkForJob(player)
     if not player then return end
@@ -15,24 +15,27 @@ end
 AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     print(data.PlayerData.source)
     local _src = type(data.PlayerData.source) == "number" and data.PlayerData.source or tonumber(data.PlayerData.source)
+    if not checkForJob(data.PlayerData.job.name) then
+        return
+    end
     Player(_src).state:set(current:format("vehicle"),nil,true)
     Player(_src).state:set(current:format("duty"),nil,true)
     Player(_src).state:set(current:format("callsign"),nil,true)
 end)
 
-lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id) 
+lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
     if not source or not id then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
-    if not PlayerData or not checkForJob(PlayerData.job.name) then return end
+    if not PlayerData or not checkForJob(PlayerData.job.name) then return  end
     local _OPlayer = QBCore.Functions.GetPlayerByCitizenId(id)
     if  _OPlayer then -- player is Online
-        ---TODO return all the that i need from the Player table.
+        ---TODO return all the that i need from the Player table.Online
         return {
-            firstname = PlayerData?.charinfo.firstname,
-            lastname = PlayerData?.charinfo.lastname,
-            phone = PlayerData?.charinfo.phone,
-            citizenid = PlayerData?.citizenid,
-            rank = PlayerData?.job.grade.name
+            firstname = PlayerData.charinfo.firstname,
+            lastname = PlayerData.charinfo.lastname,
+            phone = PlayerData.charinfo.phone,
+            citizenid = PlayerData.citizenid,
+            rank = PlayerData.job.grade.name
         }
     else
         -- Player is not online
@@ -43,20 +46,22 @@ lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
     end
 end)
 
+
 lib.callback.register("fx::pmi::server::getVehicleByPlate",function(source,plate) 
     if not plate then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-    local vehicle = db.GrabByPlate(plate)
+    local vehicle = db.GrabByPlate(plate:upper())
     return vehicle
 end)
 
-RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data) 
+
+RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
-    Player(source).state:set(string.format(current,information),data,true) 
+    Player(source).state:set(current:format(information),data,true)
 end)
 
 
