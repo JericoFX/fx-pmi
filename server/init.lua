@@ -9,6 +9,8 @@ local function checkForJob(player)
 end
 
 --- Dont know if this will work
+--- This function runs after the player spawn so we set a state bag with the value of nil.
+
 AddEventHandler("QBCore:Server:PlayerLoaded",function() 
     local _src = source
     Player(_src).state:set(string.format(current,"vehicle"),nil,true)
@@ -55,8 +57,10 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
     Player(source).state:set(string.format(current,information),data,true) 
 end)
 
+
 ---  This is the only way that i found to check if the player on client side modified a state bag.
 --- argument F is the payload size, server > client is 0, client > server is 2048
+--- I can't set a DropPlayer because PMA uses it.
 AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
     if f ~= 0 then
         print("CLIENT MODIFIED A STATE BAG")

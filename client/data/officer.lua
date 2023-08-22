@@ -3,8 +3,8 @@ local Officers = {}
 --- Function to change the Duty of the current Player
 ---@param state? boolean - State of the Duty
 function Officers.changeDuty(state)
-
-
+    if not state then return end
+    
 end
 
 --- Get the player information.
@@ -14,7 +14,5 @@ function Officers.getPlayerInformation(id)
     local status = lib.callback.await("fx::pmi::server::getPlayerInfo",nil,id)
     return status
 end
-
-
 
 return Officers
