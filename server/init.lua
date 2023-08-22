@@ -3,7 +3,7 @@ local db = require "server.data.db"
 local Config = require "config.server"
 local current = "pmi:%s"
 local updateInformation = {vehicle = true,duty = true,callsign = true}
-
+local pmiData = {}
 local function checkForJob(player)
     if not player then return end
     return Config.Job[player]
@@ -31,8 +31,20 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
             lastname = data.PlayerData.charinfo.lastname,
             phone = data.PlayerData.charinfo.phone,
             citizenid = data.PlayerData.citizenid,
-            rank = data.PlayerData.job.grade.name
+            rank = data.PlayerData.job.grade.name,
+            callsign = data.PlayerData.metadata.callsign
         })
+        pmiData[data.PlayerData.citizenid] = {
+            firstname = data.PlayerData.charinfo.firstname,
+            lastname = data.PlayerData.charinfo.lastname,
+            phone = data.PlayerData.charinfo.phone,
+            citizenid = data.PlayerData.citizenid,
+            rank = data.PlayerData.job.grade.name,
+            callsign = data.PlayerData.metadata.callsign,
+            vehicle = "",
+            duty = data.PlayerData.job.duty
+
+        }
     Player(_src).state:set(current:format("vehicle"),nil,true)
     Player(_src).state:set(current:format("duty"),nil,true)
     Player(_src).state:set(current:format("callsign"),nil,true)
@@ -41,6 +53,7 @@ end)
 
 AddEventHandler("QBCore:Server:OnPlayerUnload",function(src)
     local Player = QBCore.Functions.GetPlayer(src)
+    pmiData[Player.PlayerData.citizenid] = nil
     sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
 end)
 
@@ -76,11 +89,17 @@ lib.callback.register("fx::pmi::server::getVehicleByPlate",function(source,plate
     return vehicle
 end)
 
+lib.callback.register("fx::pmi::server::gerPmiData",function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not checkForJob(Player.PlayerData.job.name) then return end
+    return pmiData
+end)
 
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
+    pmiData[Player.PlayerData.citizenid][information] = data
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
     Player(source).state:set(current:format(information),data,true)
 end)

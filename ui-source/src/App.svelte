@@ -8,9 +8,9 @@
     href="https://unpkg.com/yesvelte@next/css/tabler.min.css"
   />
 </svelte:head>
-<div class="bg-dark w-full h-full relative">
-  <Button color="primary" title="YHOLA">HOLA CAROLA</Button>
-</div>
+<main class=" w-screen h-screen relative">
+  <div id="mainFrame" class="w-45vw h-70vh bg-dark" />
+</main>
 
 <style>
   :global(body) {

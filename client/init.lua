@@ -22,8 +22,10 @@ local function searchPlayer(data, cb)
     cb(Vehicle.getVehicleByPlate(data.plate))
 end
 
-RegisterCommand("vehplate", function(source, args)
-    print(json.encode(Player.getPlayerInformation(args[1]), { indent = true }))
+RegisterCommand("openpmi", function(source, args)
+    -- print(json.encode(Player.getPlayerInformation(args[1]), { indent = true }))
+    local openMDT = lib.callback.await("fx::pmi::server::gerPmiData", nil)
+    print(json.encode(openMDT, { indent = true }))
 end, false)
 
 AddEventHandler("onResourceStop", function(res)
