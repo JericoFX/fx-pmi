@@ -54,3 +54,12 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
     Player(source).state:set(string.format(current,information),data,true) 
 end)
+
+---  This is the only way that i found to check if the player on client side modified a state bag.
+--- argument F is the payload size, server > client is 0, client > server is 2048
+AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
+    if f ~= 0 then
+        print("CLIENT MODIFIED A STATE BAG")
+        return
+    end
+end)
