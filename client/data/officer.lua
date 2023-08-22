@@ -10,7 +10,9 @@ end
 --- Get the player information.
 ---@param id (string|number) - Player ID
 function Officers.getPlayerInformation(id)
-
+    if not id then return end
+    local status = lib.callback.await("fx::pmi::server::getPlayerInfo",nil,id)
+    return status
 end
 
 
