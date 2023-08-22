@@ -9,18 +9,39 @@ local function checkForJob(player)
     return Config.Job[player]
 end
 
+local function sendDataToJob(name,job,...)
+    local Players = QBCore.Functions.GetQBPlayers()
+    for src, Player in pairs(Players) do
+        if Player.PlayerData.job.name == job then
+            TriggerClientEvent(name,src,...)
+        end
+    end
+end
+
 --- Dont know if this will work
 --- This function runs after the player spawn so we set a state bag with the value of nil.
-
 AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
-    print(data.PlayerData.source)
     local _src = type(data.PlayerData.source) == "number" and data.PlayerData.source or tonumber(data.PlayerData.source)
     if not checkForJob(data.PlayerData.job.name) then
         return
     end
+    sendDataToJob("fx::pmi::client::addPlayerToTablet","police",
+        {
+            firstname = data.PlayerData.charinfo.firstname,
+            lastname = data.PlayerData.charinfo.lastname,
+            phone = data.PlayerData.charinfo.phone,
+            citizenid = data.PlayerData.citizenid,
+            rank = data.PlayerData.job.grade.name
+        })
     Player(_src).state:set(current:format("vehicle"),nil,true)
     Player(_src).state:set(current:format("duty"),nil,true)
     Player(_src).state:set(current:format("callsign"),nil,true)
+end)
+
+
+AddEventHandler("QBCore:Server:OnPlayerUnload",function(src)
+    local Player = QBCore.Functions.GetPlayer(src)
+    sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
 end)
 
 lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
