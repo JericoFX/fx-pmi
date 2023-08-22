@@ -1,6 +1,7 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local Player = require "client.data.officer"
-local Vehicle = require "clienta.data.vehicles"
+local Vehicle = require "client.data.vehicles"
+
 --- Function to open the NUI.
 ---@param bool boolean - Function to open the NUI and set the focus.
 ---@param data table - Table with the current pmi data.

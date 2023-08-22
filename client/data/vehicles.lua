@@ -3,7 +3,6 @@ local Config = require "config.client"
 
 CreateThread(function() 
     lib.onCache("vehicle", function(value)
-        
         local _class = GetVehicleClass(value)
         if  Config.UClass[_class] then
             local _plate = GetVehicleNumberPlateText(_class)

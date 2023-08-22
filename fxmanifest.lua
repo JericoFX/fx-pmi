@@ -18,5 +18,6 @@ server_script {
 }
 
 files {
+    'config/client.lua',
     "client/data/*.lua",
 }
