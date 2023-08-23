@@ -1,9 +1,11 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local db = require "server.data.db"
+local util = require "server.data.util"
 local Config = require "config.server"
 local current = "pmi:%s"
 local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true}
 local pmiData = {}
+pmiData.id = util.uuid(5)
 local function checkForJob(player)
     if not player then return end
     return Config.Job[player]
@@ -25,6 +27,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     if not checkForJob(data.PlayerData.job.name) then
         return
     end
+    pmiData.id = util.uuid(5)
     -- FIX FOR LATER, NEW PLAYERS NEED ALL THE DATA.
     -- This function send ONLY the recent player connected
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",
@@ -37,9 +40,11 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
             callsign = data.PlayerData.metadata.callsign,
             vehicle = "",
             duty = data.PlayerData.job.duty,
-            assignment = false
+            assignment = false,
+            id = pmiData.id
         })
     -- This one right here track all the modifications.
+       
         pmiData[data.PlayerData.citizenid] = {
             firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
@@ -101,9 +106,14 @@ end)
 
 --- Function to get th table that has all the info on the server.
 --- TODO: Send it only once, player doesnt need the full table every single time.
-lib.callback.register("fx::pmi::server::gerPmiData",function(source)
+lib.callback.register("fx::pmi::server::gerPmiData",function(source,id)
     local Player = QBCore.Functions.GetPlayer(source)
     if not checkForJob(Player.PlayerData.job.name) then return end
+    --- Pass the ID od the table, if for some reason we have the same dont send anything.
+    --- else send the new table.
+    if pmiData.id == id then 
+        return false
+    end
     return pmiData
 end)
 
@@ -114,9 +124,11 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
     pmiData[PlayerData.citizenid][information] = data
+    pmiData.id = util.uuid(5)
     sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
         citizenid = PlayerData.citizenid,
-        data = data
+        data = data,
+        id = pmiData.id
     })
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
     Player(source).state:set(current:format(information),data,true)

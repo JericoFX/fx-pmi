@@ -1,6 +1,7 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local Player = require "client.data.officer"
 local Vehicle = require "client.data.vehicles"
+local Tabla = require "client.data.table"
 require "client.data.handlers" ()
 
 --- Function to open the NUI.
