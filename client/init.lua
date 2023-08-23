@@ -24,8 +24,7 @@ local function searchPlayer(data, cb)
 end
 
 RegisterCommand("openpmi", function(source, args)
-    -- print(json.encode(Player.getPlayerInformation(args[1]), { indent = true }))
-    local openMDT = lib.callback.await("fx::pmi::server::gerPmiData", nil)
+    local openMDT = lib.callback.await("fx::pmi::server::gerPmiData", nil,Tabla.id or nil)
     print(json.encode(openMDT, { indent = true }))
 end, false)
 
