@@ -41,7 +41,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
             assignment = false
         }
 
-        sendDataToJob("fx::pmi::client::setTable","police",pmiData)
+    sendDataToJob("fx::pmi::client::setTable","police",pmiData)
 
     Player(_src).state:set(current:format("vehicle"),nil,true)
     Player(_src).state:set(current:format("duty"),nil,true)
