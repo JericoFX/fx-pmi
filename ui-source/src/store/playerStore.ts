@@ -14,6 +14,12 @@ interface Jugador {
   };
 }
 
+interface myData {
+  citizenid: string;
+  rank: string;
+  vehicle?: string;
+}
+
 const store = () => {
   const data = {
     playerData: writable([
@@ -51,6 +57,7 @@ const store = () => {
         assignment: false,
       },
     ]),
+    myData: writable<Writable<myData>>(),
   };
   const { update, set, subscribe } = writable(data);
   const methods = {
@@ -74,8 +81,8 @@ const store = () => {
     },
     updateAsignament: (cid: string, datas: any) => {
       data.playerData.update((e) => {
-        const id = e.findIndex((e: { cid: string }) => e.cid === cid);
-        e[id] = { ...e, asignament: datas };
+        const id = e.findIndex((es) => es.citizenid === cid);
+        e[id] = { ...e[id], asignament: datas };
         e = e;
         return e;
       });
