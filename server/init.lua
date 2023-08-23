@@ -107,7 +107,7 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-    pmiData[Player.PlayerData.citizenid][information] = data
+    pmiData[PlayerData.citizenid][information] = data
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
     Player(source).state:set(current:format(information),data,true)
 end)
