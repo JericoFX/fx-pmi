@@ -43,10 +43,10 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
 
     sendDataToJob("fx::pmi::client::setTable","police",pmiData)
 
-    Player(_src).state:set(current:format("vehicle"),nil,true)
-    Player(_src).state:set(current:format("duty"),nil,true)
-    Player(_src).state:set(current:format("callsign"),nil,true)
-    Player(_src).state:set(current:format("assignment"),nil,true)
+    -- Player(_src).state:set(current:format("vehicle"),nil,true)
+    -- Player(_src).state:set(current:format("duty"),nil,true)
+    -- Player(_src).state:set(current:format("callsign"),nil,true)
+    -- Player(_src).state:set(current:format("assignment"),nil,true)
 end)
 
 
@@ -112,13 +112,12 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
         data = data
     })
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
-    Player(source).state:set(current:format(information),data,true)
+   -- Player(source).state:set(current:format(information),data,true)
 end)
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.
 --- argument F is the payload size, server > client is 0, client > server is 2048
 --- I can't set a DropPlayer because PMA uses it.
-
 ---@param a string Player number (server)
 ---@param s string Name of the bag.
 ---@param d any Value of the bag modified.
