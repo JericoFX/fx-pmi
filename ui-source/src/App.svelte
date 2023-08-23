@@ -3,6 +3,7 @@
   import Officers from './pages/Officers.svelte';
   import Store from "./store/playerStore"
   const {setData} from Store
+  
   useNuiEvent("openMDT",function(data) 
     setData(data)
   end)
