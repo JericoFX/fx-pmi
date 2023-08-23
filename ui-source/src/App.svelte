@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, Icon,Tooltip } from "yesvelte";
+  import { Button, El, Icon,Tooltip } from "yesvelte";
     import Officers from "./pages/Officers.svelte";
 </script>
 
@@ -28,9 +28,8 @@
       </div>
     </div>
     <div class="app bg-light absolute right-0 w-94% h-full -z-1">
-    
-            <Officers ></Officers>
-  
+      <El tag="h1" p="3" class="fw-600">OFFICERS</El>
+        <Officers ></Officers>
     </div>
   </div>
 </main>
@@ -38,5 +37,6 @@
 <style>
   :global(body) {
     background-color: transparent !important;
+    font-family: 'Montserrat', sans-serif;
   }
 </style>

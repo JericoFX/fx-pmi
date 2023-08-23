@@ -2,7 +2,7 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 local db = require "server.data.db"
 local Config = require "config.server"
 local current = "pmi:%s"
-local updateInformation = {vehicle = true,duty = true,callsign = true}
+local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true}
 local pmiData = {}
 local function checkForJob(player)
     if not player then return end
@@ -27,12 +27,15 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     end
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",
         {
-            firstname = data.PlayerData.charinfo.firstname,
+              firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
             phone = data.PlayerData.charinfo.phone,
             citizenid = data.PlayerData.citizenid,
             rank = data.PlayerData.job.grade.name,
-            callsign = data.PlayerData.metadata.callsign
+            callsign = data.PlayerData.metadata.callsign,
+            vehicle = "",
+            duty = data.PlayerData.job.duty,
+            assignment = false
         })
         pmiData[data.PlayerData.citizenid] = {
             firstname = data.PlayerData.charinfo.firstname,
@@ -42,12 +45,14 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
             rank = data.PlayerData.job.grade.name,
             callsign = data.PlayerData.metadata.callsign,
             vehicle = "",
-            duty = data.PlayerData.job.duty
+            duty = data.PlayerData.job.duty,
+            assignment = false
 
         }
     Player(_src).state:set(current:format("vehicle"),nil,true)
     Player(_src).state:set(current:format("duty"),nil,true)
     Player(_src).state:set(current:format("callsign"),nil,true)
+    Player(_src).state:set(current:format("assignment"),nil,true)
 end)
 
 
