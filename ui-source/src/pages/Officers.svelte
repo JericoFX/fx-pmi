@@ -8,6 +8,7 @@
     Status,
     Button,
     Icon,
+    El
   } from 'yesvelte';
   import Store from '../store/playerStore';
   const { playerData, changeDuty, setData } = Store;
@@ -33,6 +34,7 @@
 </script>
 
 <main class="w-full h-full">
+ <El tag="h1" p="3" class="fw-600">OFFICERS</El>
   <Table hover class="mt-15">
     <TableHead>
       <TableRow>
