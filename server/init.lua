@@ -27,7 +27,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     end
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",
         {
-              firstname = data.PlayerData.charinfo.firstname,
+            firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
             phone = data.PlayerData.charinfo.phone,
             citizenid = data.PlayerData.citizenid,
