@@ -88,8 +88,10 @@ lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
     end
 end)
 
-
-lib.callback.register("fx::pmi::server::getVehicleByPlate",function(source,plate) 
+--- Callback to get the data from a vehicle and send it back to the player.
+---@param source (string|number) - Source of the player
+---@param plate string - Plate of the vehicle.
+lib.callback.register("fx::pmi::server::getVehicleByPlate",function(source,plate --[[@as string]]) 
     if not plate then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
@@ -97,21 +99,28 @@ lib.callback.register("fx::pmi::server::getVehicleByPlate",function(source,plate
     return vehicle
 end)
 
+--- Function to get th table that has all the info on the server.
+--- TODO: Send it only once, player doesnt need the full table every single time.
 lib.callback.register("fx::pmi::server::gerPmiData",function(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if not checkForJob(Player.PlayerData.job.name) then return end
     return pmiData
 end)
 
+--- Event that handle all the modifications on the player.
+---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
     pmiData[PlayerData.citizenid][information] = data
+    sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
+        citizenid = PlayerData.citizenid,
+        data = data
+    })
     --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
     Player(source).state:set(current:format(information),data,true)
 end)
-
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.
 --- argument F is the payload size, server > client is 0, client > server is 2048

@@ -1,8 +1,10 @@
 return function()
     local Eventos = {}
+
     AddStateBagChangeHandler("pmi:vehicle", nil, function(a, s, value, f, g)
         print("From State Bag: ", GetEntityFromStateBagName(a))
     end)
+
     RegisterNetEvent("fx::pmi::client::addPlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::addPlayerToTablet", function(data)
         SendNUIMessage({
@@ -13,6 +15,7 @@ return function()
             }
         })
     end)
+
     RegisterNetEvent("fx::pmi::client::removePlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::removePlayerToTablet", function(data)
         SendNUIMessage({
@@ -21,6 +24,14 @@ return function()
                 type = "remove",
                 data = data
             }
+        })
+    end)
+
+    RegisterNetEvent("fx::pmi::client::updatePmiInformation")
+    Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::updatePmiInformation", function(information,data)
+        SendNUIMessage({
+            action = information,
+            data = data
         })
     end)
 
