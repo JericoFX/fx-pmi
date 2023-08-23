@@ -1,3 +1,7 @@
+ <script lang="ts">
+import {Icon,Tooltip} from "yesvelte"
+ </script>
+ 
  <div class="flex h-full justify-around items-center flex-col">
         <Icon
           name="shield-check-filled"
