@@ -24,8 +24,12 @@ local function searchPlayer(data, cb)
 end
 
 RegisterCommand("openpmi", function(source, args)
-    local openMDT = lib.callback.await("fx::pmi::server::gerPmiData", nil)
-    print(json.encode(openMDT, { indent = true }))
+    -- local openMDT = lib.callback.await("fx::pmi::server::gerPmiData", nil)
+    -- print(json.encode(openMDT, { indent = true }))
+    SendNUIMessage({
+        action = "openMDT",
+        data = Tabla
+    })
 end, false)
 
 AddEventHandler("onResourceStop", function(res)
