@@ -56,10 +56,12 @@ const store = () => {
   const methods = {
     changeDuty: (cid: string, datas: boolean) => {
       data.playerData.update((e: any) => {
-        const id = e.findIndex((e: { cid: string }) => e.cid === cid);
+        const id = e.findIndex((e) => e.citizenid === cid);
+        console.log(id);
         // e =
-        e[id] = { ...e, duty: datas };
-        e = e;
+        e[id] = { ...e[id], duty: datas };
+        console.log(JSON.stringify(e));
+        e = [...e];
         return e;
       });
     },

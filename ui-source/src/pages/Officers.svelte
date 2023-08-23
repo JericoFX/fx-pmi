@@ -10,7 +10,11 @@
     Icon,
   } from 'yesvelte';
   import Store from '../store/playerStore';
-  const { playerData } = Store;
+  const { playerData, changeDuty } = Store;
+
+  const change = (cid, data) => {
+    changeDuty(cid, data);
+  };
   let color = false;
 </script>
 
@@ -29,11 +33,11 @@
       </TableRow>
     </TableHead>
     <TableBody>
-      {#each $playerData as data (data.citizenid)}
+      {#each $playerData as data}
         {@const duty = data.duty ? 'On Duty' : 'Off Duty'}
-        {@const onDutyColor = duty ? 'danger' : 'success'}
+        {@const onDutyColor = data.duty ? 'success' : 'danger'}
         <TableRow>
-          <TableCell on:click={() => (color = !color)}
+          <TableCell on:click={(e) => changeDuty(data.citizenid, !data.duty)}
             ><Status color={onDutyColor}>{duty}</Status></TableCell
           >
           <TableCell>{data.callsign}</TableCell>
@@ -42,12 +46,12 @@
           <TableCell>{data.phone}</TableCell>
           <TableCell>{data.citizenid}</TableCell>
           <TableCell
-            ><Button disabled={!color} ghost>
+            ><Button disabled={!data.duty} ghost>
               <Icon color="dark" name="car" size="auto" />
             </Button></TableCell
           >
           <TableCell
-            ><Button disabled={!color} ghost>
+            ><Button disabled={!data.duty} ghost>
               <Icon color="dark" name="info-hexagon" size="auto" />
             </Button></TableCell
           >
