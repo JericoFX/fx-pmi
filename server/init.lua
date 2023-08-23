@@ -25,6 +25,8 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     if not checkForJob(data.PlayerData.job.name) then
         return
     end
+    -- FIX FOR LATER, NEW PLAYERS NEED ALL THE DATA.
+    -- This function send ONLY the recent player connected
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",
         {
             firstname = data.PlayerData.charinfo.firstname,
@@ -37,6 +39,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
             duty = data.PlayerData.job.duty,
             assignment = false
         })
+    -- This one right here track all the modifications.
         pmiData[data.PlayerData.citizenid] = {
             firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
