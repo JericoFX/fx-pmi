@@ -5,9 +5,13 @@ return function()
         print("From State Bag: ", GetEntityFromStateBagName(a))
     end)
 
+    RegisterNetEvent("fx::pmi::client::setTable")
+    Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::setTable", function(data)
+        Table = data
+    end)
+
     RegisterNetEvent("fx::pmi::client::addPlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::addPlayerToTablet", function(data)
-        Table.id = data.id
         Table[#Table+1] = data
         SendNUIMessage({
             action = "updatePolice",
@@ -20,7 +24,6 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::removePlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::removePlayerToTablet", function(data)
-        Table.id = data.id
         Table[data.citizenid] = nil
         SendNUIMessage({
             action = "updatePolice",
@@ -33,7 +36,6 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::updatePmiInformation")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::updatePmiInformation", function(information,data)
-        Table.id = data.id
         Table[data.citizenid][information] = data
         SendNUIMessage({
             action = information,
