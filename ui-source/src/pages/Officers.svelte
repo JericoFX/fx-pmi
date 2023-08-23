@@ -10,7 +10,21 @@
     Icon,
   } from 'yesvelte';
   import Store from '../store/playerStore';
-  const { playerData, changeDuty } = Store;
+  const { playerData, changeDuty, setData } = Store;
+
+  setTimeout(() => {
+    setData({
+      firstname: 'Jerisscoasd',
+      lastname: 'FXs',
+      phone: 'sss',
+      citizenid: 'ADS1ssss1232332',
+      rank: 'Liutenaent',
+      callsign: 'C510',
+      vehicle: '',
+      duty: true,
+      assignment: false,
+    });
+  }, 5000);
 
   const change = (cid, data) => {
     changeDuty(cid, data);

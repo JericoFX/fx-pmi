@@ -67,7 +67,7 @@ const store = () => {
     },
     setData: (updateData: any) => {
       data.playerData.update((e) => {
-        e = { ...e, ...updateData };
+        e = [...e, updateData];
         e = e;
         return e;
       });
