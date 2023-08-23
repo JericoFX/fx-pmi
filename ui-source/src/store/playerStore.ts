@@ -19,7 +19,7 @@ interface myData {
   rank: string;
   vehicle?: string;
 }
-
+//--TODO MAKE THAT THE PLAYER CAN ONLY MODIFY HIS OWN DATA
 const store = () => {
   const data = {
     playerData: writable([
@@ -64,10 +64,9 @@ const store = () => {
     changeDuty: (cid: string, datas: boolean) => {
       data.playerData.update((e: any) => {
         const id = e.findIndex((e) => e.citizenid === cid);
-        console.log(id);
+        if (!id) return;
         // e =
         e[id] = { ...e[id], duty: datas };
-        console.log(JSON.stringify(e));
         e = [...e];
         return e;
       });
@@ -75,15 +74,16 @@ const store = () => {
     setData: (updateData: any) => {
       data.playerData.update((e) => {
         e = [...e, updateData];
-        e = e;
+        e = [...e];
         return e;
       });
     },
     updateAsignament: (cid: string, datas: any) => {
       data.playerData.update((e) => {
         const id = e.findIndex((es) => es.citizenid === cid);
-        e[id] = { ...e[id], asignament: datas };
-        e = e;
+        if (!id) return;
+        e[id] = { ...e[id], assignment: datas };
+        e = [...e];
         return e;
       });
     },
