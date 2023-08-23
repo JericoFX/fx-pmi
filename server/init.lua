@@ -10,7 +10,11 @@ local function checkForJob(player)
     return Config.Job[player]
 end
 
-local function sendDataToJob(name,job,...)
+--- Function to send data just to the sources with specific jobs.
+---@param name string - Name of the event.
+---@param job string - Name of the job.
+---@param ... any - All the data you want to send with the event
+local function sendDataToJob(name,job --[[@as string]],...)
     local Players = QBCore.Functions.GetQBPlayers()
     for src, Player in pairs(Players) do
         if Player.PlayerData.job.name == job then
