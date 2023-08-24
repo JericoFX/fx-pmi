@@ -1,4 +1,6 @@
 import { writable, type Writable } from 'svelte/store';
+import { fetchNui } from '../utils/fetchNui';
+import { isEnvBrowser } from '../utils/misc';
 
 interface Jugador {
   [citizenid: string]: {
@@ -63,21 +65,31 @@ const store = () => {
   };
   const { update, set, subscribe } = writable(data);
   const methods = {
-    changeDuty: (cid, duty) => {
+    changeDuty: (cid: any, duty: any) => {
       // Send the citizenid to check if the player is the same that triggered the event
-      fetchNui('changeDuty', { cid, duty }).then(async (cb) => {
-        try {
-          data.playerData.update((e: any) => {
-            const id = e.findIndex((e) => e.citizenid === cid);
-            if (id === -1) return;
-            e[id] = { ...e[id], duty: cb };
-            e = [...e];
-            return e;
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      if (isEnvBrowser()) {
+        data.playerData.update((e: any) => {
+          const id = e.findIndex((e) => e.citizenid === cid);
+          if (id === -1) return;
+          e[id] = { ...e[id], duty: duty };
+          e = [...e];
+          return e;
+        });
+      } else {
+        // fetchNui('changeDuty', { cid, duty }).then(async (cb) => {
+        //   try {
+        //     data.playerData.update((e: any) => {
+        //       const id = e.findIndex((e) => e.citizenid === cid);
+        //       if (id === -1) return;
+        //       e[id] = { ...e[id], duty: cb };
+        //       e = [...e];
+        //       return e;
+        //     });
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        // });
+      }
     },
     setData: (updateData: any) => {
       data.playerData.update((e) => {
