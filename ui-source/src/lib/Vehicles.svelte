@@ -1,9 +1,13 @@
 <script lang="ts">
+interface Vehicle {
+  entity?:string;
+  plate?:string;
+  vehicle?:string;
+}
+
+
   import {
     Button,
-    ButtonGroup,
-    Divider,
-    El,
     FormInput,
     Icon,
     Tooltip,
@@ -12,19 +16,19 @@
     ModalFooter,
   } from 'yesvelte';
   export let showCenter: boolean = false;
-  export let id: any = {};
+  export let id: Vehicle = {};
 </script>
 
 <main />
 <Modal title="Vehicle Window" placement="center" bind:show={showCenter}>
   <ModalBody>
-    <FormInput readonly value="Primo">
+    <FormInput readonly value={id.vehicle}>
       <Button slot="end"
         ><Icon name="gps" />
         <Tooltip placement="top" text="Locate Vehicle" /></Button
       >
     </FormInput>
-    <FormInput readonly value="ASD12345">
+    <FormInput readonly value={id.plate.toUpperCase()}>
       <Button disabled slot="end">Plate</Button>
     </FormInput>
   </ModalBody>
