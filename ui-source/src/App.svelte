@@ -9,7 +9,7 @@
   import { darkMode } from './store/playerStore';
   import {isEnvBrowser} from "./utils/misc"
 //-----------------------------------------------------//
-  const { setData, setIndexData } = Store;
+  const { setData, setIndexData ,updateVehicle} = Store;
   let open = isEnvBrowser()
 //-----------------------------------------------------//
   $: {
@@ -23,6 +23,11 @@
   useNuiEvent('openMDT', ({open,data}) => {
     open = open
     setIndexData(data);
+  });
+
+   useNuiEvent('vehicle', ({data}) => {
+    open = open
+    updateVehicle(data);
   });
 //-----------------------------------------------------//
   function handleKeydown(event: {keyCode: number}) {

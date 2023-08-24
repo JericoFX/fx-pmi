@@ -63,12 +63,19 @@ const store = () => {
   };
   const { update, set, subscribe } = writable(data);
   const methods = {
-    changeDuty: (cid: number, datas: boolean) => {
-      data.playerData.update((e: any) => {
-        const id = e.findIndex((e) => e.citizenid === cid);
-        e[cid] = { ...e[cid], duty: datas };
-        e = [...e];
-        return e;
+    changeDuty: (cid: string, datas: boolean) => {
+      fetchNui('changeDuty', { datas }).then(async (cb) => {
+        try {
+          data.playerData.update((e: any) => {
+            const id = e.findIndex((e) => e.citizenid === cid);
+            if (id === -1) return;
+            e[id] = { ...e[id], duty: cb };
+            e = [...e];
+            return e;
+          });
+        } catch (error) {
+          console.log(error);
+        }
       });
     },
     setData: (updateData: any) => {
@@ -85,11 +92,20 @@ const store = () => {
         return e;
       });
     },
-    updateAsignament: (cid: string, datas: any) => {
+    updateAsignament: (datas: { citizenid: string; assignment: any }) => {
       data.playerData.update((e) => {
-        const id = e.findIndex((es) => es.citizenid === cid);
+        const id = e.findIndex((es) => es.citizenid === datas.citizenid);
         if (!id) return;
-        e[id] = { ...e[id], assignment: datas };
+        e[id] = { ...e[id], assignment: datas.assignment };
+        e = [...e];
+        return e;
+      });
+    },
+    updateVehicle: (datas: { citizenid: string; vehicle: any }) => {
+      data.playerData.update((e) => {
+        const id = e.findIndex((es) => es.citizenid === datas.citizenid);
+        if (!id) return;
+        e[id] = { ...e[id], vehicle: datas.vehicle };
         e = [...e];
         return e;
       });
