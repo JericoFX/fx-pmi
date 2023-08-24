@@ -8,10 +8,19 @@ require "client.data.handlers" ()
 ---@param bool boolean - Function to open the NUI and set the focus.
 ---@param data table - Table with the current pmi data.
 local function openNUI(bool)
+    local job,charinfo in QBCore.Functions.GetPlayerData()
+
     SetNuiFocus(bool,bool)
+
     SendNUIMessage({
         action = "openMDT",
-        data = Tabla
+        data = Tabla,
+        mydata = {
+            firstname = charinfo.firstname,
+            lastname = charinfo.lastname,
+            rank = job.grade.name,
+            duty = job.duty
+        }
     })
 end
 

@@ -9,7 +9,7 @@
   import { darkMode } from './store/playerStore';
   import {isEnvBrowser} from "./utils/misc"
 //-----------------------------------------------------//
-  const { setData, setIndexData ,updateVehicle,changeDuty} = Store;
+  const { setData, setIndexData ,updateVehicle,changeDuty,myData,updateAsignament} = Store;
   let open = isEnvBrowser()
 //-----------------------------------------------------//
   $: {
@@ -20,9 +20,10 @@
     }
   }
 //-----------------------------------------------------//
-  useNuiEvent('openMDT', ({open,data}) => {
+  useNuiEvent('openMDT', ({open,data,mydata}) => {
     open = open
     setIndexData(data);
+    myData(mydata)
   });
 
   useNuiEvent('vehicle', ({data}) => {
