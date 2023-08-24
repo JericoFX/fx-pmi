@@ -4,13 +4,34 @@
   import Navbar from './lib/Navbar.svelte';
   import { useNuiEvent } from './utils/useNuiEvent';
   import { debugData } from './utils/debugData';
+  import {fetchNui} from "./utils/fetchNui"
   import { onMount } from 'svelte';
   import { darkMode } from './store/playerStore';
+  import {isEnvBrowser} from "./utils/misc"
   const { setData, setIndexData } = Store;
-  onMount(() => {});
-  useNuiEvent('openMDT', (data: any) => {
+
+  let open = isEnvBrowser()
+
+  $: {
+    if ($darkMode) {
+      document.documentElement.setAttribute('data-bs-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
+    }
+  }
+
+  useNuiEvent('openMDT', ({open,data}) => {
+    open = open
     setIndexData(data);
   });
+
+  function handleKeydown(event: {keyCode: number}) {
+		if (event.keyCode === 27) {
+			open = false; // set open to false, that close the nui
+			fetchNui('closeNUI'); // Send the event to LUA so it can hide the cursor
+		}
+	}
+
 
   debugData([
     {
@@ -52,13 +73,7 @@
       ],
     },
   ]);
-  $: {
-    if ($darkMode) {
-      document.documentElement.setAttribute('data-bs-theme', 'light');
-    } else {
-      document.documentElement.setAttribute('data-bs-theme', 'dark');
-    }
-  }
+
 </script>
 
 <svelte:head>
@@ -67,6 +82,10 @@
     href="https://unpkg.com/yesvelte@next/css/tabler.min.css"
   />
 </svelte:head>
+
+<svelte:window on:keydown={handleKeydown} />
+
+{#if open}
 <main class=" w-screen h-screen relative select-none">
   <div id="mainFrame" class="w-65vw h-80vh absolute-center rounded">
     <div
@@ -80,6 +99,7 @@
     </div>
   </div>
 </main>
+{/if}
 
 <style>
   :global(body) {
