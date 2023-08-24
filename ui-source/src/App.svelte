@@ -9,7 +9,7 @@
   import { darkMode } from './store/playerStore';
   import {isEnvBrowser} from "./utils/misc"
 //-----------------------------------------------------//
-  const { setData, setIndexData ,updateVehicle} = Store;
+  const { setData, setIndexData ,updateVehicle,changeDuty} = Store;
   let open = isEnvBrowser()
 //-----------------------------------------------------//
   $: {
@@ -25,9 +25,16 @@
     setIndexData(data);
   });
 
-   useNuiEvent('vehicle', ({data}) => {
-    open = open
+  useNuiEvent('vehicle', ({data}) => {
     updateVehicle(data);
+  });
+
+  useNuiEvent('duty', ({data}) => {
+    changeDuty(data);
+  });
+
+  useNuiEvent('assignment', ({data}) => {
+    updateAsignament(data);
   });
 //-----------------------------------------------------//
   function handleKeydown(event: {keyCode: number}) {

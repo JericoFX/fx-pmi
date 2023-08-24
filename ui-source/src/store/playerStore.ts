@@ -63,8 +63,9 @@ const store = () => {
   };
   const { update, set, subscribe } = writable(data);
   const methods = {
-    changeDuty: (cid: string, datas: boolean) => {
-      fetchNui('changeDuty', { datas }).then(async (cb) => {
+    changeDuty: (cid, duty) => {
+      // Send the citizenid to check if the player is the same that triggered the event
+      fetchNui('changeDuty', { cid, duty }).then(async (cb) => {
         try {
           data.playerData.update((e: any) => {
             const id = e.findIndex((e) => e.citizenid === cid);
