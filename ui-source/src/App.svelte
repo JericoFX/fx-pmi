@@ -2,14 +2,16 @@
   import Officers from './pages/Officers.svelte';
   import Store from './store/playerStore';
   import Navbar from './lib/Navbar.svelte';
-
   import { useNuiEvent } from './utils/useNuiEvent';
   import { debugData } from './utils/debugData';
+  import { onMount } from 'svelte';
+  import { darkMode } from './store/playerStore';
   const { setData, setIndexData } = Store;
-
+  onMount(() => {});
   useNuiEvent('openMDT', (data: any) => {
     setIndexData(data);
   });
+
   debugData([
     {
       action: 'openMDT',
@@ -50,6 +52,13 @@
       ],
     },
   ]);
+  $: {
+    if ($darkMode) {
+      document.documentElement.setAttribute('data-bs-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
+    }
+  }
 </script>
 
 <svelte:head>
@@ -59,14 +68,14 @@
   />
 </svelte:head>
 <main class=" w-screen h-screen relative select-none">
-  <div id="mainFrame" class="w-65vw h-80vh bg-#242424 absolute-center rounded">
+  <div id="mainFrame" class="w-65vw h-80vh absolute-center rounded">
     <div
       id="leftBar"
-      class="absolute left-0 w-4vw h-full bg-#343434 rounded shadow-black shadow-md"
+      class="absolute left-0 w-4vw h-full rounded shadow-black shadow-md"
     >
       <Navbar />
     </div>
-    <div class="app bg-light absolute right-0 w-94% h-full -z-1">
+    <div class="app absolute right-0 w-94% h-full -z-1">
       <Officers />
     </div>
   </div>
@@ -76,5 +85,8 @@
   :global(body) {
     background-color: transparent !important;
     font-family: 'Montserrat', sans-serif;
+  }
+  #mainFrame {
+    background-color: var(--y-body-bg);
   }
 </style>

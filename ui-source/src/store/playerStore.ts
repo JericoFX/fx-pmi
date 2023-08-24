@@ -19,6 +19,8 @@ interface myData {
   rank: string;
   vehicle?: string;
 }
+
+export let darkMode = writable(false);
 //--TODO MAKE THAT THE PLAYER CAN ONLY MODIFY HIS OWN DATA
 const store = () => {
   const data = {

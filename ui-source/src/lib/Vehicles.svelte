@@ -5,6 +5,8 @@
     Divider,
     El,
     FormInput,
+    Icon,
+    Tooltip,
     Modal,
     ModalBody,
     ModalFooter,
@@ -16,21 +18,17 @@
 <main />
 <Modal title="Vehicle Window" placement="center" bind:show={showCenter}>
   <ModalBody>
-    <FormInput disabled value="PRIMO" placeholder="Primo">
-      <span slot="start-icon">Vehicle</span>
+    <FormInput readonly value="Primo">
+      <Button slot="end"
+        ><Icon name="gps" />
+        <Tooltip placement="top" text="Locate Vehicle" /></Button
+      >
     </FormInput>
-    <FormInput disabled value="ASD123" placeholder="Primo">
-      <span slot="start-icon">Plate</span>
+    <FormInput readonly value="ASD12345">
+      <Button disabled slot="end">Plate</Button>
     </FormInput>
   </ModalBody>
   <ModalFooter>
-    <ButtonGroup>
-      <Button color="primary" on:click={() => (showCenter = false)}>OK</Button>
-      <Button color="danger" on:click={() => (showCenter = false)}>Close</Button
-      >
-      <Button color="secondary" on:click={() => (showCenter = false)}
-        >Coordinates</Button
-      >
-    </ButtonGroup>
+    <Button color="danger" on:click={() => (showCenter = false)}>Close</Button>
   </ModalFooter>
 </Modal>

@@ -64,7 +64,7 @@
               disabled={!data.duty}
               ghost
             >
-              <Icon color="dark" name="car" size="auto" />
+              <Icon name="car" size="auto" />
             </Button></TableCell
           >
           <TableCell
@@ -73,10 +73,9 @@
               disabled={!data.duty || !data.assignment}
               ghost
             >
-              <Icon color="dark" name="info-hexagon" size="auto" />
+              <Icon name="info-hexagon" size="auto" />
             </Button></TableCell
           >
-          <TableCell>{data.assignment}</TableCell>
         </TableRow>
       {/each}
     </TableBody>
