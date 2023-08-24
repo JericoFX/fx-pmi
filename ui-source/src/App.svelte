@@ -5,7 +5,6 @@
   import { useNuiEvent } from './utils/useNuiEvent';
   import { debugData } from './utils/debugData';
   import {fetchNui} from "./utils/fetchNui"
-  import { onMount } from 'svelte';
   import { darkMode } from './store/playerStore';
   import {isEnvBrowser} from "./utils/misc"
   const { setData, setIndexData } = Store;

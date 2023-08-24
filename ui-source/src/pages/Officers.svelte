@@ -14,18 +14,36 @@
   import Store from '../store/playerStore';
   import Assignment from '../lib/Assignment.svelte';
   import Vehicles from '../lib/Vehicles.svelte';
+import { fetchNui } from '../utils/fetchNui';
   const { playerData, changeDuty, setData } = Store;
 
   const change = (cid, data) => {
     changeDuty(cid, data);
   };
+
   setTimeout(() => {
     changeDuty('0', true);
   }, 1500);
+
   let color = false;
   let openAssignament = false;
   let openVehicle = false;
   let currentID = null;
+
+  const changeDutys = (id,bool) =>{
+    fetchNui("changeDuty",async (cb)=>{
+      try {
+        if(cb){
+          changeDuty(id,bool)
+          return
+        }
+      } catch (error) {
+          console.log(error)
+          return
+      }
+    })
+  }
+
 </script>
 
 <main class="w-full h-full">
@@ -50,7 +68,7 @@
         <TableRow>
           <TableCell
             class="hover:cursor-pointer"
-            on:click={(e) => changeDuty(i, !data.duty)}
+            on:click={(e) => changeDutys(i, !data.duty)}
             ><Status color={onDutyColor}>{duty}</Status></TableCell
           >
           <TableCell>{data.callsign}</TableCell>
