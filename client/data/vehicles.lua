@@ -26,15 +26,17 @@ function Vehicles.getVehicleByPlate(plate)
     return _vehicle
 end
 
-function Vehicles.getVehicleCoordinate(entity)
+function Vehicles.getVehicleCoordinate(entity,blip)
     if not DoesEntityExist(entity) then return false end
     local _coords = GetEntityCoords(entity)
-    local blip = AddBlipForCoord(_coords.x, _coords.y, 5.0)
-    SetBlipRoute(blip,true)
-    Citizen.SetTimeOut(10000,function() 
-        SetBlipRoute(blip,false)
-        DeleteBlip(blip)
-    end)
+    if blip then
+        local _blip = AddBlipForCoord(_coords.x, _coords.y, 5.0)
+        SetBlipRoute(_blip,true)
+        Citizen.SetTimeOut(10000,function() 
+            SetBlipRoute(_blip,false)
+            DeleteBlip(_blip)
+        end)
+    end
     return _coords
 end
 
