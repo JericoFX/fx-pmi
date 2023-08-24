@@ -29,6 +29,7 @@
 		if (event.keyCode === 27) {
 			open = false; // set open to false, that close the nui
 			fetchNui('closeNUI'); // Send the event to LUA so it can hide the cursor
+      setData([])
 		}
 	}
 
