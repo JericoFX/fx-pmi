@@ -8,19 +8,28 @@
     Status,
     Button,
     Icon,
-    El
+    El,
   } from 'yesvelte';
+
   import Store from '../store/playerStore';
+  import Assignment from '../lib/Assignment.svelte';
+  import Vehicles from '../lib/Vehicles.svelte';
   const { playerData, changeDuty, setData } = Store;
 
   const change = (cid, data) => {
     changeDuty(cid, data);
   };
+  setTimeout(() => {
+    changeDuty('0', true);
+  }, 1500);
   let color = false;
+  let openAssignament = false;
+  let openVehicle = false;
+  let currentID = null;
 </script>
 
 <main class="w-full h-full">
- <El tag="h1" p="3" class="fw-600">OFFICERS</El>
+  <El tag="h1" p="3" class="fw-600">OFFICERS</El>
   <Table hover class="mt-15">
     <TableHead>
       <TableRow>
@@ -35,11 +44,13 @@
       </TableRow>
     </TableHead>
     <TableBody>
-      {#each $playerData as data}
+      {#each $playerData as data, i (data.citizenid)}
         {@const duty = data.duty ? 'On Duty' : 'Off Duty'}
         {@const onDutyColor = data.duty ? 'success' : 'danger'}
         <TableRow>
-          <TableCell on:click={(e) => changeDuty(data.citizenid, !data.duty)}
+          <TableCell
+            class="hover:cursor-pointer"
+            on:click={(e) => changeDuty(i, !data.duty)}
             ><Status color={onDutyColor}>{duty}</Status></TableCell
           >
           <TableCell>{data.callsign}</TableCell>
@@ -48,17 +59,28 @@
           <TableCell>{data.phone}</TableCell>
           <TableCell>{data.citizenid}</TableCell>
           <TableCell
-            ><Button disabled={!data.duty} ghost>
+            ><Button
+              on:click={() => (openVehicle = !openVehicle)}
+              disabled={!data.duty}
+              ghost
+            >
               <Icon color="dark" name="car" size="auto" />
             </Button></TableCell
           >
           <TableCell
-            ><Button disabled={!data.duty} ghost>
+            ><Button
+              on:click={() => (openAssignament = !openAssignament)}
+              disabled={!data.duty || !data.assignment}
+              ghost
+            >
               <Icon color="dark" name="info-hexagon" size="auto" />
             </Button></TableCell
           >
+          <TableCell>{data.assignment}</TableCell>
         </TableRow>
       {/each}
     </TableBody>
   </Table>
+  <Assignment bind:showCenter={openAssignament} id={currentID} />
+  <Vehicles bind:showCenter={openVehicle} />
 </main>
