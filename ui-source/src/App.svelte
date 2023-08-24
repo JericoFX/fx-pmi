@@ -1,4 +1,5 @@
 <script lang="ts">
+  //-----------------------------------------------------//
   import Officers from './pages/Officers.svelte';
   import Store from './store/playerStore';
   import Navbar from './lib/Navbar.svelte';
@@ -7,10 +8,10 @@
   import {fetchNui} from "./utils/fetchNui"
   import { darkMode } from './store/playerStore';
   import {isEnvBrowser} from "./utils/misc"
+//-----------------------------------------------------//
   const { setData, setIndexData } = Store;
-
   let open = isEnvBrowser()
-
+//-----------------------------------------------------//
   $: {
     if ($darkMode) {
       document.documentElement.setAttribute('data-bs-theme', 'light');
@@ -18,7 +19,7 @@
       document.documentElement.setAttribute('data-bs-theme', 'dark');
     }
   }
-
+//-----------------------------------------------------//
   useNuiEvent('openMDT', ({open,data}) => {
     open = open
     setIndexData(data);
@@ -30,7 +31,6 @@
 			fetchNui('closeNUI'); // Send the event to LUA so it can hide the cursor
 		}
 	}
-
 
   debugData([
     {
@@ -72,7 +72,7 @@
       ],
     },
   ]);
-
+//-----------------------------------------------------//
 </script>
 
 <svelte:head>

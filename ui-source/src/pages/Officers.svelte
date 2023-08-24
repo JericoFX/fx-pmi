@@ -10,23 +10,17 @@
     Icon,
     El,
   } from 'yesvelte';
-
   import Store from '../store/playerStore';
   import Assignment from '../lib/Assignment.svelte';
   import Vehicles from '../lib/Vehicles.svelte';
   import { fetchNui } from '../utils/fetchNui';
+//-----------------------------------------------------//
   const { playerData, changeDuty, setData } = Store;
-
-  // Function to test the changeDuty
-  // setTimeout(() => {
-  //   changeDuty('0', true);
-  // }, 1500);
-
   let color = false;
   let openAssignament = false;
   let openVehicle = false;
   let currentID = null;
-
+//-----------------------------------------------------//
   const changeDutys = (id,bool) =>{
     fetchNui("changeDuty",async (cb)=>{
       try {
