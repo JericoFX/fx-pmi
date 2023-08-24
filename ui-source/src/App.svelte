@@ -24,7 +24,7 @@
     open = open
     setIndexData(data);
   });
-
+//-----------------------------------------------------//
   function handleKeydown(event: {keyCode: number}) {
 		if (event.keyCode === 27) {
 			open = false; // set open to false, that close the nui
