@@ -14,16 +14,13 @@
   import Store from '../store/playerStore';
   import Assignment from '../lib/Assignment.svelte';
   import Vehicles from '../lib/Vehicles.svelte';
-import { fetchNui } from '../utils/fetchNui';
+  import { fetchNui } from '../utils/fetchNui';
   const { playerData, changeDuty, setData } = Store;
 
-  const change = (cid, data) => {
-    changeDuty(cid, data);
-  };
-
-  setTimeout(() => {
-    changeDuty('0', true);
-  }, 1500);
+  // Function to test the changeDuty
+  // setTimeout(() => {
+  //   changeDuty('0', true);
+  // }, 1500);
 
   let color = false;
   let openAssignament = false;
