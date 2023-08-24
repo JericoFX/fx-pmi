@@ -26,7 +26,15 @@ function Vehicles.getVehicleByPlate(plate)
     return _vehicle
 end
 
+--- Function that return coordinates of a vehicle and has the power to put a blip on it.
+---@param entity (number|string) - Entity to return the coords.
+---@param blip boolean - Add a blip to the entity.
+---@return {x:number,y:number,z:number} - Vector3 of the entity
 function Vehicles.getVehicleCoordinate(entity,blip)
+    if not entity then 
+        entity = Vehicles.grabEntityByPlate(entity) 
+        if not entity then return false end
+    end
     if not DoesEntityExist(entity) then return false end
     local _coords = GetEntityCoords(entity)
     if blip then
@@ -38,6 +46,21 @@ function Vehicles.getVehicleCoordinate(entity,blip)
         end)
     end
     return _coords
+end
+
+--- im not sure about this one, the client cant get all the vehicles, maybe move this to the server?
+---@param plate string - Plate of the vehicle
+---@return (string|number|boolean)
+function Vehicles.grabEntityByPlate(plate)
+    local vehicles = GetGamePool('CVehicle')
+    for i = 0, #vehicles do
+        local el = #vehicles[i]
+        local _plate = GetVehicleNumberPlateText(el)
+        if _plate == plate then
+            return el
+        end
+    end
+    return false
 end
 
 return Vehicles

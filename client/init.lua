@@ -31,12 +31,13 @@ end
 
 --- Function that take a plate and return the vehicle information.
 --- REMEMBER TO ALWAYS RETURN SOMETHING TO THE NUI
----@param data {plate:string} - Plate
+---@param data {plate:string,blip:(boolean|nil)} - Plate
 ---@param cb function - callback
-local function searchPlayer(data, cb)
-    local plate in data
+local function searchVehicle(data, cb)
+    local plate,blip in data
     if not plate then return cb(nil) end
-    cb(Vehicle.getVehicleByPlate(plate))
+    local _veh = Vehicle.getVehicleByPlate(plate,blip or nil)
+    cb(_veh)
 end
 
 RegisterCommand("openpmi", function(source, args)
