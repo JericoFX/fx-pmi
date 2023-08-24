@@ -104,7 +104,7 @@ const store = () => {
     updateVehicle: (datas: { citizenid: string; vehicle: any }) => {
       data.playerData.update((e) => {
         const id = e.findIndex((es) => es.citizenid === datas.citizenid);
-        if (!id) return;
+        if (id === -1) return;
         e[id] = { ...e[id], vehicle: datas.vehicle };
         e = [...e];
         return e;
