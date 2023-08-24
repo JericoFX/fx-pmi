@@ -29,7 +29,7 @@ end
 --- Function that return coordinates of a vehicle and has the power to put a blip on it.
 ---@param entity (number|string) - Entity to return the coords.
 ---@param blip boolean - Add a blip to the entity.
----@return {x:number,y:number,z:number} - Vector3 of the entity
+---@return ({x:number,y:number,z:number}|boolean) - Vector3 of the entity
 function Vehicles.getVehicleCoordinate(entity,blip)
     if not entity then 
         entity = Vehicles.grabEntityByPlate(entity) 
