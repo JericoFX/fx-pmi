@@ -50,7 +50,7 @@ local function searchVehicle(data, cb)
 end
 
 RegisterCommand("openpmi", function(source, args)
-   openNUI(true,true)
+   openNUI(true)
 end, false)
 
 
@@ -59,6 +59,7 @@ AddEventHandler("onResourceStop", function(res)
     require "client.data.handlers" ()()
 end)
 
-RegisterNuicommand("closeNUI",closeNUI)
-RegisterNuicommand("changeDuty",changeDuty)
-RegisterNuicommand("searchPlayer",searchPlayer)
+RegisterNUICallback("closeNUI",closeNUI)
+RegisterNUICallback("changeDuty",changeDuty)
+RegisterNUICallback("searchVehicle",searchVehicle)
+

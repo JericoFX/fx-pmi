@@ -1,11 +1,12 @@
 <script lang="ts">
   import { Button, Icon, Tooltip } from 'yesvelte';
   import { darkMode } from '../store/playerStore';
+  import { push } from 'svelte-spa-router';
   $: dark = $darkMode ? 'sun-off' : 'sun-low';
 </script>
 
 <div class="flex h-full justify-around items-center flex-col">
-  <Button size="lg">
+  <Button on:click={() => push('/')} size="lg">
     <Icon
       name="shield-check-filled"
       class="hover:w-9 transition-width cursor-pointer"
@@ -14,7 +15,7 @@
   </Button>
 
   <Tooltip placement="top">Officers</Tooltip>
-  <Button size="lg">
+  <Button on:click={() => push('/people')} size="lg">
     <Icon
       name="user"
       class="hover:w-9 transition-width cursor-pointer"

@@ -8,6 +8,8 @@
   import { fetchNui } from './utils/fetchNui';
   import { darkMode } from './store/playerStore';
   import { isEnvBrowser } from './utils/misc';
+  import Router from 'svelte-spa-router';
+  import routes from './utils/routes';
   //-----------------------------------------------------//
   const {
     setData,
@@ -66,8 +68,11 @@
             citizenid: 'ADS12332',
             rank: 'Liutenent',
             callsign: 'C510',
-            vehicle: false,
-            duty: false,
+            vehicle: {
+              plate: 'ASD123456',
+              vehicle: 'Primo',
+            },
+            duty: true,
             assignment: false,
           },
           {
@@ -123,8 +128,8 @@
       >
         <Navbar />
       </div>
-      <div class="app absolute right-0 w-94% h-full -z-1">
-        <Officers />
+      <div class="app absolute right-0 w-94% h-full -z-1 rounded">
+        <Router {routes} />
       </div>
     </div>
   </main>
