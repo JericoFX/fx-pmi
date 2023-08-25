@@ -26,41 +26,7 @@ export let darkMode = writable(false);
 //--TODO MAKE THAT THE PLAYER CAN ONLY MODIFY HIS OWN DATA
 const store = () => {
   const data = {
-    playerData: writable([
-      // {
-      //   firstname: 'Jerico',
-      //   lastname: 'FX',
-      //   phone: '099999999',
-      //   citizenid: 'ADS12332',
-      //   rank: 'Liutenent',
-      //   callsign: 'C510',
-      //   vehicle: '',
-      //   duty: false,
-      //   assignment: false,
-      // },
-      // {
-      //   firstname: 'Jeriaco',
-      //   lastname: 'FsX',
-      //   phone: '09922222',
-      //   citizenid: 'ADSasddsa',
-      //   rank: 'Liutensent',
-      //   callsign: 'C5s10',
-      //   vehicle: '',
-      //   duty: false,
-      //   assignment: false,
-      // },
-      // {
-      //   firstname: 'Jerissco',
-      //   lastname: 'FX',
-      //   phone: 'sssss',
-      //   citizenid: 'ADS11232332',
-      //   rank: 'Liutenaent',
-      //   callsign: 'C510',
-      //   vehicle: '',
-      //   duty: false,
-      //   assignment: false,
-      // },
-    ]),
+    playerData: writable<Writable<Jugador[]>>([]),
     myData: writable<Writable<myData>>(),
   };
   const { update, set, subscribe } = writable(data);

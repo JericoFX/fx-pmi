@@ -20,11 +20,11 @@
   let color = false;
   let openAssignament = false;
   let openVehicle = false;
-  let currentID = null;
-  let currentVehicle = null;
+  let currentID: string | number | null = null;
+  let currentVehicle: string | number | null = null;
   //-----------------------------------------------------//
   const changeDutys = (id, bool) => {
-    if (id !== $myData.citizenid) return;
+    if (id !== $myData?.citizenid) return;
     if (!isEnvBrowser()) {
       fetchNui('changeDuty', async (cb) => {
         try {
@@ -58,29 +58,29 @@
       </TableRow>
     </TableHead>
     <TableBody>
-      {#each $playerData as data, i (data.citizenid)}
-        {#if data}
+      {#if $playerData}
+        {#each $playerData as data, i (data.citizenid)}
           {@const duty = data?.duty ? 'On Duty' : 'Off Duty'}
           {@const onDutyColor = data?.duty ? 'success' : 'danger'}
-          {@const mycid = data?.citizenid === $myData.citizenid}
+          {@const mycid = data?.citizenid === $myData?.citizenid}
           <TableRow>
             <TableCell
               class={`${mycid ? 'hover:cursor-pointer' : ''}`}
-              on:click={(e) => changeDutys(data.citizenid, !data.duty)}
+              on:click={(e) => changeDutys(data?.citizenid, !data?.duty)}
             >
               <Status color={onDutyColor}>{duty}</Status>
             </TableCell>
-            <TableCell>{data.callsign}</TableCell>
-            <TableCell>{data.firstname}</TableCell>
-            <TableCell>{data.lastname}</TableCell>
-            <TableCell>{data.phone}</TableCell>
-            <TableCell>{data.citizenid}</TableCell>
+            <TableCell>{data?.callsign}</TableCell>
+            <TableCell>{data?.firstname}</TableCell>
+            <TableCell>{data?.lastname}</TableCell>
+            <TableCell>{data?.phone}</TableCell>
+            <TableCell>{data?.citizenid}</TableCell>
             <TableCell
               ><Button
                 on:click={() => (
                   (openVehicle = !openVehicle), (currentVehicle = data.vehicle)
                 )}
-                disabled={!data.duty || !data.vehicle}
+                disabled={!data?.duty || !data?.vehicle}
                 ghost
               >
                 <Icon name="car" size="auto" />
@@ -89,23 +89,26 @@
             <TableCell
               ><Button
                 on:click={() => (openAssignament = !openAssignament)}
-                disabled={!data.duty || !data.assignment}
+                disabled={!data?.duty || !data?.assignment}
                 ghost
               >
                 <Icon name="info-hexagon" size="auto" />
               </Button></TableCell
             >
           </TableRow>
-        {/if}
-      {/each}
+        {/each}
+      {:else}
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+        <TableCell>No Defined</TableCell>
+      {/if}
     </TableBody>
   </Table>
   <Assignment bind:showCenter={openAssignament} id={currentID} />
   <Vehicles bind:showCenter={openVehicle} id={currentVehicle} />
 </main>
-
-<style>
-  .pointer:hover {
-    cursor: pointer;
-  }
-</style>
