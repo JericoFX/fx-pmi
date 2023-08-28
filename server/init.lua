@@ -115,8 +115,6 @@ RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,da
         citizenid = PlayerData.citizenid,
         data = data
     })
-    --- Maybe instead of a bag, create a triggerclientevent with the source of the polices in job and thats it.
-   -- Player(source).state:set(current:format(information),data,true)
 end)
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.

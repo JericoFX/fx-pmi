@@ -9,9 +9,7 @@ require "client.data.handlers" ()
 ---@param data table - Table with the current pmi data.
 local function openNUI(bool)
     local job,charinfo in QBCore.Functions.GetPlayerData()
-
     SetNuiFocus(bool,bool)
-
     SendNUIMessage({
         action = "openMDT",
         data = Tabla,
@@ -32,10 +30,21 @@ local function closeNUI(_, cb)
     SetNuiFocus(false,false)
 end
 
+--- Function to change the Duty.
+---@param data boolean - Boolean of the duty.
+---@param cb function - Function to pass back to the nui
 local function changeDuty(data, cb)
     local duty in data
     if not duty then return cb(nil) end
     cb(Player.changeDuty(duty))
+end
+
+--- Function to get a X player info.
+---@param {citizenid:string} - Citizenid of the target player.
+---@param cb function - Function to pass back to the nui
+local function getPlayerInfo(data,cb)
+    local citizenid in data
+    cb(Player.getPlayerInformation(citizenid))
 end
 
 --- Function that take a plate and return the vehicle information.
