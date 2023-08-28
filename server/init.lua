@@ -62,28 +62,39 @@ end)
 
 AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
     local Player = QBCore.Functions.GetPlayer(src)
-    if not checkForJob(job.name) then return end
-    pmiData[data.PlayerData.citizenid] = {
-        firstname = data.PlayerData.charinfo.firstname,
-        lastname = data.PlayerData.charinfo.lastname,
-        phone = data.PlayerData.charinfo.phone,
-        citizenid = data.PlayerData.citizenid,
-        rank = data.PlayerData.job.grade.name,
-        callsign = data.PlayerData.metadata.callsign,
+    if  pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name) then
+        -- If the player changed his job and before that was a police, lets clean the table
+        print("Player was a police ")
+        sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
+        pmiData[Player.PlayerData.citizenid] = nil
+        return 
+    elseif not pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name)
+        -- If his not in the table and not a police then return it
+        print("Player isnt a police and he is not on the table")
+        return
+    end
+
+    pmiData[Player.PlayerData.citizenid] = {
+        firstname = Player.PlayerData.charinfo.firstname,
+        lastname = Player.PlayerData.charinfo.lastname,
+        phone = Player.PlayerData.charinfo.phone,
+        citizenid = Player.PlayerData.citizenid,
+        rank = Player.PlayerData.job.grade.name,
+        callsign = Player.PlayerData.metadata.callsign,
         vehicle = "",
-        duty = data.PlayerData.job.duty,
+        duty = Player.PlayerData.job.duty,
         assignment = false
     }
 
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",{
-        firstname = data.PlayerData.charinfo.firstname,
-        lastname = data.PlayerData.charinfo.lastname,
-        phone = data.PlayerData.charinfo.phone,
-        citizenid = data.PlayerData.citizenid,
-        rank = data.PlayerData.job.grade.name,
-        callsign = data.PlayerData.metadata.callsign,
+        firstname = Player.PlayerData.charinfo.firstname,
+        lastname = Player.PlayerData.charinfo.lastname,
+        phone = Player.PlayerData.charinfo.phone,
+        citizenid = Player.PlayerData.citizenid,
+        rank = Player.PlayerData.job.grade.name,
+        callsign = Player.PlayerData.metadata.callsign,
         vehicle = "",
-        duty = data.PlayerData.job.duty,
+        duty = Player.PlayerData.job.duty,
         assignment = false
     })
 end)
