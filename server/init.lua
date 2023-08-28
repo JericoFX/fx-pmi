@@ -60,6 +60,35 @@ AddEventHandler("QBCore:Server:OnPlayerUnload",function(src)
     sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
 end)
 
+AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not checkForJob(job.name) then return end
+    pmiData[data.PlayerData.citizenid] = {
+        firstname = data.PlayerData.charinfo.firstname,
+        lastname = data.PlayerData.charinfo.lastname,
+        phone = data.PlayerData.charinfo.phone,
+        citizenid = data.PlayerData.citizenid,
+        rank = data.PlayerData.job.grade.name,
+        callsign = data.PlayerData.metadata.callsign,
+        vehicle = "",
+        duty = data.PlayerData.job.duty,
+        assignment = false
+    }
+
+    sendDataToJob("fx::pmi::client::addPlayerToTablet","police",{
+        firstname = data.PlayerData.charinfo.firstname,
+        lastname = data.PlayerData.charinfo.lastname,
+        phone = data.PlayerData.charinfo.phone,
+        citizenid = data.PlayerData.citizenid,
+        rank = data.PlayerData.job.grade.name,
+        callsign = data.PlayerData.metadata.callsign,
+        vehicle = "",
+        duty = data.PlayerData.job.duty,
+        assignment = false
+    })
+end)
+
+
 lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
     if not source or not id then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
