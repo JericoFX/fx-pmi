@@ -71,4 +71,5 @@ end)
 RegisterNUICallback("closeNUI",closeNUI)
 RegisterNUICallback("changeDuty",changeDuty)
 RegisterNUICallback("searchVehicle",searchVehicle)
+RegisterNUICallback("getPlayerInfo",getPlayerInfo)
 
