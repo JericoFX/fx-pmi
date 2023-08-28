@@ -12,7 +12,7 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::addPlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::addPlayerToTablet", function(data)
-        Table[#Table+1] = data
+        Table[data.citizenid] = data
         SendNUIMessage({
             action = "updatePolice",
             data = {
