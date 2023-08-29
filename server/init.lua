@@ -11,18 +11,22 @@ local function checkForJob(player)
 end
 
 local function checkForVehicle(plate)
-    local plate = tostring(plate)
-    local Vehicles = GetAllVehicles()
-    for i=0,#Vehicles,-1 do
-        local el = Vehicles[i]
-        if DoesEntityExist(el) then
-            local _plate = GetVehicleNumberPlateText(el)
-            if _plate == plate then
-                return el
+    local p = promise.new()
+    Citizen.CreateThreadNow(function() 
+        local plate = tostring(plate)
+        local Vehicles = GetAllVehicles()
+        for i=0, #Vehicles,-1 do
+            local el = Vehicles[i]
+            if DoesEntityExist(el) then
+                local _plate = GetVehicleNumberPlateText(el)
+                if _plate == plate then
+                    p:resolve(el)
+                end
             end
         end
-    end
-    return false
+        p:resolve(false)
+    end)
+    return Citizen.Await(p)
 end
 
 --- Function to send data just to the sources with specific jobs.
