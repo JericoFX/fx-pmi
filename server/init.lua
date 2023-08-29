@@ -5,17 +5,21 @@ local Config = require "config.server"
 local current = "pmi:%s"
 local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true}
 local pmiData = {}
+
 local function checkForJob(player)
     if not player then return end
     return Config.Job[player]
 end
 
+--- Function to get the vehicle from a plate, im not sure about this one, a thread and a promise?, a promise need a corutine?,God knows...
+---@param plate string - Plate of the vehicle.
+---@return (number|boolean)
 local function checkForVehicle(plate)
     local p = promise.new()
     Citizen.CreateThreadNow(function() 
         local plate = tostring(plate)
         local Vehicles = GetAllVehicles()
-        for i=0, #Vehicles,-1 do
+        for i=0, #Vehicles do
             local el = Vehicles[i]
             if DoesEntityExist(el) then
                 local _plate = GetVehicleNumberPlateText(el)
@@ -69,10 +73,6 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
 
     sendDataToJob("fx::pmi::client::setTable","police",pmiData)
     end)
-    -- Player(_src).state:set(current:format("vehicle"),nil,true)
-    -- Player(_src).state:set(current:format("duty"),nil,true)
-    -- Player(_src).state:set(current:format("callsign"),nil,true)
-    -- Player(_src).state:set(current:format("assignment"),nil,true)
 end)
 
 
