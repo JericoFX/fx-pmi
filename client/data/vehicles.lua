@@ -63,15 +63,9 @@ end
 ---@param plate string - Plate of the vehicle
 ---@return (string|number|boolean)
 function Vehicles.grabEntityByPlate(plate)
-    local vehicles = GetGamePool('CVehicle')
-    for i = 0, #vehicles do
-        local el = #vehicles[i]
-        local _plate = GetVehicleNumberPlateText(el)
-        if _plate == plate then
-            return el
-        end
-    end
-    return false
+    if not plate or type(plate) ~= "string" then return end
+    local exist = lib.callback.await("fx::pmi::server::doesVehicleExist",nil,plate)
+    return exist
 end
 
 return Vehicles

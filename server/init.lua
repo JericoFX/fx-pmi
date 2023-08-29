@@ -10,6 +10,22 @@ local function checkForJob(player)
     return Config.Job[player]
 end
 
+local function checkForVehicle(plate)
+    local plate = tostring(plate)
+local Vehicles = GetAllVehicles()
+
+for i=0,#Vehicles,-1 do
+    local el = Vehicles[i]
+    if DoesEntityExist(el) then
+        local _plate = GetVehicleNumberPlateText(el)
+        if _plate == plate then
+            return el
+        end
+    end
+end
+return false
+end
+
 --- Function to send data just to the sources with specific jobs.
 ---@param name string - Name of the event.
 ---@param job string - Name of the job.
@@ -142,6 +158,14 @@ lib.callback.register("fx::pmi::server::gerPmiData",function(source,id)
     --- Pass the ID od the table, if for some reason we have the same dont send anything.
     --- else send the new table.
     return pmiData
+end)
+
+lib.callback.register("fx::pmi::server::doesVehicleExist",function(source,plate) 
+    if not source or not plate then return end
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not checkForJob(Player.PlayerData.job.name) then return end
+    local _entity = checkForVehicle(plate)
+    return _entity and GetEntityCoords(_entity) or false
 end)
 
 --- Event that handle all the modifications on the player.
