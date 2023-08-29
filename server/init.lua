@@ -34,12 +34,14 @@ end
 ---@param job string - Name of the job.
 ---@param ... any - All the data you want to send with the event
 local function sendDataToJob(name,job --[[@as string]],...)
-    local Players = QBCore.Functions.GetQBPlayers()
-    for src, Player in pairs(Players) do
-        if Player.PlayerData.job.name == job then
-            TriggerClientEvent(name,src,...)
+    Citizen.CreateThreadNow(function() 
+        local Players = QBCore.Functions.GetQBPlayers()
+        for src, Player in pairs(Players) do
+            if Player.PlayerData.job.name == job then
+                TriggerClientEvent(name,src,...)
+            end
         end
-    end
+    end)
 end
 
 --- Dont know if this will work
