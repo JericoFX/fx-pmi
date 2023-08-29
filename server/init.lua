@@ -12,18 +12,17 @@ end
 
 local function checkForVehicle(plate)
     local plate = tostring(plate)
-local Vehicles = GetAllVehicles()
-
-for i=0,#Vehicles,-1 do
-    local el = Vehicles[i]
-    if DoesEntityExist(el) then
-        local _plate = GetVehicleNumberPlateText(el)
-        if _plate == plate then
-            return el
+    local Vehicles = GetAllVehicles()
+    for i=0,#Vehicles,-1 do
+        local el = Vehicles[i]
+        if DoesEntityExist(el) then
+            local _plate = GetVehicleNumberPlateText(el)
+            if _plate == plate then
+                return el
+            end
         end
     end
-end
-return false
+    return false
 end
 
 --- Function to send data just to the sources with specific jobs.
@@ -42,6 +41,7 @@ end
 --- Dont know if this will work
 --- This function runs after the player spawn so we set a state bag with the value of nil.
 AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
+    Citizen.CreateThreadNow(function() 
     local _src = type(data.PlayerData.source) == "number" and data.PlayerData.source or tonumber(data.PlayerData.source)
     if not checkForJob(data.PlayerData.job.name) then
         return
@@ -62,7 +62,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
         }
 
     sendDataToJob("fx::pmi::client::setTable","police",pmiData)
-
+    end)
     -- Player(_src).state:set(current:format("vehicle"),nil,true)
     -- Player(_src).state:set(current:format("duty"),nil,true)
     -- Player(_src).state:set(current:format("callsign"),nil,true)
@@ -160,6 +160,10 @@ lib.callback.register("fx::pmi::server::gerPmiData",function(source,id)
     return pmiData
 end)
 
+--- Function to check if a vehicle exist and if exist will return the coords.
+---@param source (string|number) - Player that fire the event.
+---@param plate string - Plate of the vehicle
+---@return ({x:string,y:string,z:string} | boolean)
 lib.callback.register("fx::pmi::server::doesVehicleExist",function(source,plate) 
     if not source or not plate then return end
     local Player = QBCore.Functions.GetPlayer(source)
@@ -187,7 +191,7 @@ end)
 ---@param a string Player number (server)
 ---@param s string Name of the bag.
 ---@param d any Value of the bag modified.
----@param f number payload
+---@param f number payload size
 ---@param g boolean Networked?
 AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
     local player = GetPlayerFromStateBagName(a)
