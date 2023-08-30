@@ -3,7 +3,7 @@ local db = require "server.data.db"
 local util = require "server.data.util"
 local Config = require "config.server"
 local current = "pmi:%s"
-local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true}
+local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true,radio = true}
 local pmiData = {}
 
 local function checkForJob(player)
