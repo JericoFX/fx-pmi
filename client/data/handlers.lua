@@ -2,7 +2,6 @@ return function()
     local Eventos = {}
     local Table = require "client.data.table"
     AddStateBagChangeHandler("radioChannel", nil, function(a, s, value, f, g)
-        local player = GetEntityFromStateBagName(a)
         TriggerServerEvent("fx::pmi::server::updatePmiInformation","radio",value)
     end)
 
