@@ -43,6 +43,7 @@ local function sendDataToJob(name,job --[[@as string]],...)
         for src, Player in pairs(Players) do
             if Player.PlayerData.job.name == job then
                 TriggerClientEvent(name,src,...)
+                Wait(0)
             end
         end
     end)
@@ -123,12 +124,13 @@ end)
 
 
 lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
-    if not source or not id then return end
-    local PlayerData in QBCore.Functions.GetPlayer(source)
-    if not PlayerData or not checkForJob(PlayerData.job.name) then return  end
-    local _OPlayer = QBCore.Functions.GetPlayerByCitizenId(id)
-    if  _OPlayer then -- player is Online
-        ---TODO return all the that i need from the Player table.Online
+    local st ,pt = pcall(function() 
+        if not source or not id then return end
+        local PlayerData in QBCore.Functions.GetPlayer(source)
+        if not PlayerData or not checkForJob(PlayerData.job.name) then return  end
+        local _OPlayer = QBCore.Functions.GetPlayerByCitizenId(id)
+        if  _OPlayer then -- player is Online
+            ---TODO return all the that i need from the Player table.Online
         return {
             firstname = PlayerData.charinfo.firstname,
             lastname = PlayerData.charinfo.lastname,
@@ -143,6 +145,8 @@ lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
         if not _CurrentPlayer then return false end
         return _CurrentPlayer
     end
+end)
+return st
 end)
 
 --- Callback to get the data from a vehicle and send it back to the player.
@@ -180,15 +184,16 @@ end)
 
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
+--- why i put this in a corrutine? because in my imagination this will run a lot of times, and is better wait for the result.
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
-    if not updateInformation[tostring(information)] then return end
-    local PlayerData in QBCore.Functions.GetPlayer(source)
-    if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-    pmiData[PlayerData.citizenid][information] = data
-    sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
-        citizenid = PlayerData.citizenid,
-        data = data
-    })
+        if not updateInformation[tostring(information)] then return end
+        local PlayerData in QBCore.Functions.GetPlayer(source)
+        if not PlayerData or not checkForJob(PlayerData.job.name) then return end
+        pmiData[PlayerData.citizenid][information] = data
+        sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
+            citizenid = PlayerData.citizenid,
+            data = data
+        })
 end)
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.
