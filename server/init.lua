@@ -1,9 +1,11 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
+--- Require files, thanks to OX!
 local db = require "server.data.db"
 local util = require "server.data.util"
 local Config = require "config.server"
 local current = "pmi:%s"
-local updateInformation = {vehicle = true,duty = true,callsign = true, assignment = true,radio = true}
+--- Information that will send it over to the client.
+local updateInformation = {vehicle = true, duty = true, callsign = true, assignment = true, radio = true}
 local pmiData = {}
 
 local function checkForJob(player)
@@ -56,9 +58,6 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     if not checkForJob(data.PlayerData.job.name) then
         return
     end
-    -- FIX FOR LATER, NEW PLAYERS NEED ALL THE DATA.
-    -- This function send ONLY the recent player connected
-    -- This one right here track all the modifications.
         pmiData[data.PlayerData.citizenid] = {
             firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
@@ -124,27 +123,25 @@ end)
 lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
     local st ,pt = pcall(function() 
         if not source or not id then return end
-        local PlayerData in QBCore.Functions.GetPlayer(source)
-        if not PlayerData or not checkForJob(PlayerData.job.name) then return  end
-        local _OPlayer = QBCore.Functions.GetPlayerByCitizenId(id)
+            local PlayerData in QBCore.Functions.GetPlayer(source)
+            if not PlayerData or not checkForJob(PlayerData.job.name) then return  end
+            local _OPlayer = QBCore.Functions.GetPlayerByCitizenId(id)
         if  _OPlayer then -- player is Online
-            ---TODO return all the that i need from the Player table.Online
-        return {
-            firstname = PlayerData.charinfo.firstname,
-            lastname = PlayerData.charinfo.lastname,
-            phone = PlayerData.charinfo.phone,
-            citizenid = PlayerData.citizenid,
-            rank = PlayerData.job.grade.name
-        }
-    else
+            return {
+                firstname = PlayerData.charinfo.firstname,
+                lastname = PlayerData.charinfo.lastname,
+                phone = PlayerData.charinfo.phone,
+                citizenid = PlayerData.citizenid,
+                rank = PlayerData.job.grade.name
+            }
+        else
         -- Player is not online
-        ---TODO return all the that i need from the Player table.
-        local _CurrentPlayer = db.GrabByCitizenID(id)
-        if not _CurrentPlayer then return false end
-        return _CurrentPlayer
-    end
-end)
-return st
+            local _CurrentPlayer = db.GrabByCitizenID(id)
+            if not _CurrentPlayer then return false end
+            return _CurrentPlayer
+        end
+    end)
+    return st
 end)
 
 --- Callback to get the data from a vehicle and send it back to the player.
@@ -160,12 +157,10 @@ end)
 
 --- Function to get th table that has all the info on the server.
 --- TODO: Send it only once, player doesnt need the full table every single time.
-lib.callback.register("fx::pmi::server::gerPmiData",function(source,id)
+lib.callback.register("fx::pmi::server::gerPmiData",function(source,returnData)
     local Player = QBCore.Functions.GetPlayer(source)
-    if not checkForJob(Player.PlayerData.job.name) then return end
-    --- Pass the ID od the table, if for some reason we have the same dont send anything.
-    --- else send the new table.
-    return pmiData
+    if not checkForJob(Player.PlayerData.job.name) then return false end
+    return true
 end)
 
 --- Function to check if a vehicle exist and if exist will return the coords.
@@ -182,16 +177,15 @@ end)
 
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
---- why i put this in a corrutine? because in my imagination this will run a lot of times, and is better wait for the result.
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
-        if not updateInformation[tostring(information)] then return end
-        local PlayerData in QBCore.Functions.GetPlayer(source)
-        if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-        pmiData[PlayerData.citizenid][information] = data
-        sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
-            citizenid = PlayerData.citizenid,
-            data = data
-        })
+    if not updateInformation[tostring(information)] then return end
+    local PlayerData in QBCore.Functions.GetPlayer(source)
+    if not PlayerData or not checkForJob(PlayerData.job.name) then return end
+    pmiData[PlayerData.citizenid][information] = data
+    sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
+        citizenid = PlayerData.citizenid,
+        data = data
+    })
 end)
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.

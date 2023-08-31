@@ -1,6 +1,8 @@
 return function()
     local Eventos = {}
     local Table = require "client.data.table"
+
+    --- pmi-voice Handler
     AddStateBagChangeHandler("radioChannel", nil, function(a, s, value, f, g)
         TriggerServerEvent("fx::pmi::server::updatePmiInformation","radio",value)
     end)

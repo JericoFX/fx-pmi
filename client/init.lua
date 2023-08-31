@@ -8,7 +8,7 @@ require "client.data.handlers" ()
 ---@param bool boolean - Function to open the NUI and set the focus.
 ---@param data table - Table with the current pmi data.
 local function openNUI(bool)
-    local job,charinfo in QBCore.Functions.GetPlayerData()
+    local job,charinfo,citizenid in QBCore.Functions.GetPlayerData()
     SetNuiFocus(bool,bool)
     SendNUIMessage({
         action = "openMDT",
@@ -16,6 +16,7 @@ local function openNUI(bool)
         mydata = {
             firstname = charinfo.firstname,
             lastname = charinfo.lastname,
+            citizenid = citizenid,
             rank = job.grade.name,
             duty = job.duty
         }
@@ -59,7 +60,9 @@ local function searchVehicle(data, cb)
 end
 
 RegisterCommand("openpmi", function(source, args)
-   openNUI(true)
+    lib.callback("fx::pmi::server::gerPmiData",nil,function(res) 
+        openNUI(res)
+    end)
 end, false)
 
 
