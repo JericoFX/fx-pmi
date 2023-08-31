@@ -52,7 +52,6 @@ end
 --- Dont know if this will work
 --- This function runs after the player spawn so we set a state bag with the value of nil.
 AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
-    Citizen.CreateThreadNow(function() 
     local _src = type(data.PlayerData.source) == "number" and data.PlayerData.source or tonumber(data.PlayerData.source)
     if not checkForJob(data.PlayerData.job.name) then
         return
@@ -73,7 +72,6 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
         }
 
     sendDataToJob("fx::pmi::client::setTable","police",pmiData)
-    end)
 end)
 
 
