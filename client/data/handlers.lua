@@ -1,8 +1,10 @@
 return function()
     local Eventos = {}
     local Table = require "client.data.table"
-    AddStateBagChangeHandler("pmi:vehicle", nil, function(a, s, value, f, g)
-        print("From State Bag: ", GetEntityFromStateBagName(a))
+
+    --- pmi-voice Handler
+    AddStateBagChangeHandler("radioChannel", nil, function(a, s, value, f, g)
+        TriggerServerEvent("fx::pmi::server::updatePmiInformation","radio",value)
     end)
 
     RegisterNetEvent("fx::pmi::client::setTable")
@@ -12,7 +14,7 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::addPlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::addPlayerToTablet", function(data)
-        Table[#Table+1] = data
+        Table[data.citizenid] = data
         SendNUIMessage({
             action = "updatePolice",
             data = {

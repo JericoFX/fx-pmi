@@ -3,8 +3,8 @@ local Officers = {}
 --- Function to change the Duty of the current Player
 ---@param state? boolean - State of the Duty
 function Officers.changeDuty(state)
-    if not state then return end
-    
+    if type(state) ~= "boolean" then return nil end
+    TriggerServerEvent("fx::pmi::server::updatePmiInformation","duty",state)
 end
 
 --- Get the player information.

@@ -40,9 +40,20 @@ function Vehicles.getVehicleCoordinate(entity,blip)
     if blip then
         local _blip = AddBlipForCoord(_coords.x, _coords.y, 5.0)
         SetBlipRoute(_blip,true)
+        lib.notify({
+            title = 'Blip Marked',
+            description = 'A blip has been marked on the map for 10 seconds',
+            type = 'success',
+            duration=10000
+        })
         Citizen.SetTimeOut(10000,function() 
             SetBlipRoute(_blip,false)
             DeleteBlip(_blip)
+            lib.notify({
+                title = 'Blip Deleted',
+                description = 'Blip Deleted',
+                type = 'inform'
+            })
         end)
     end
     return _coords
@@ -52,15 +63,9 @@ end
 ---@param plate string - Plate of the vehicle
 ---@return (string|number|boolean)
 function Vehicles.grabEntityByPlate(plate)
-    local vehicles = GetGamePool('CVehicle')
-    for i = 0, #vehicles do
-        local el = #vehicles[i]
-        local _plate = GetVehicleNumberPlateText(el)
-        if _plate == plate then
-            return el
-        end
-    end
-    return false
+    if not plate or type(plate) ~= "string" then return end
+    local exist = lib.callback.await("fx::pmi::server::doesVehicleExist",nil,plate)
+    return exist
 end
 
 return Vehicles
