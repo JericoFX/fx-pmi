@@ -1,16 +1,18 @@
-import { defineConfig } from "vite";
-import UnoCSS from "unocss/vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
-
-// https://vitejs.dev/config/
+import { defineConfig } from 'vite';
+import solid from 'vite-plugin-solid';
+import path from 'path';
 export default defineConfig({
-  plugins: [svelte(), UnoCSS()],
-  base: "",
+  plugins: [solid()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     minify: true,
     emptyOutDir: true,
-    outDir: "../ui",
-    assetsDir: "./",
+    outDir: '../ui',
+    assetsDir: './',
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,
