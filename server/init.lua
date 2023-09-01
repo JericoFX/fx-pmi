@@ -178,6 +178,7 @@ end)
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
+
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
