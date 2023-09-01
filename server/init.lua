@@ -132,7 +132,8 @@ lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
                 lastname = PlayerData.charinfo.lastname,
                 phone = PlayerData.charinfo.phone,
                 citizenid = PlayerData.citizenid,
-                rank = PlayerData.job.grade.name
+                rank = PlayerData.job.grade.name,
+                duty = PlayerData.job.onduty
             }
         else
         -- Player is not online
