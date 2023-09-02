@@ -4,7 +4,8 @@ return function()
 
     --- pmi-voice Handler
     AddStateBagChangeHandler("radioChannel", nil, function(a, s, value, f, g)
-        TriggerServerEvent("fx::pmi::server::updatePmiInformation","radio",value)
+        print(value)
+        TriggerServerEvent("fx::pmi::server::updatePmiInformation", "radio", value)
     end)
 
     RegisterNetEvent("fx::pmi::client::setTable")
@@ -14,22 +15,23 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::addPlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::addPlayerToTablet", function(data)
-        Table[data.citizenid] = data
+        if Table[data[1].citizenid] then return end
+        Table[data[1].citizenid] = data
         SendNUIMessage({
-            action = "updatePolice",
-            data = {
+            type = "updatePolice",
+            payload = {
                 type = "add",
-                data = data
+                data = data[1]
             }
         })
     end)
 
     RegisterNetEvent("fx::pmi::client::removePlayerToTablet")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::removePlayerToTablet", function(data)
-        Table[data.citizenid] = nil
+        Table[data[1].citizenid] = nil
         SendNUIMessage({
-            action = "updatePolice",
-            data = {
+            type = "updatePolice",
+            payload = {
                 type = "remove",
                 data = data
             }
@@ -37,11 +39,11 @@ return function()
     end)
 
     RegisterNetEvent("fx::pmi::client::updatePmiInformation")
-    Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::updatePmiInformation", function(information,data)
+    Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::updatePmiInformation", function(information, data)
         Table[data.citizenid][information] = data
         SendNUIMessage({
-            action = information,
-            data = data
+            type = information,
+            payload = data
         })
     end)
 

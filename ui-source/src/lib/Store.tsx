@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { JSX, createContext, useContext } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
@@ -15,7 +16,23 @@ const Store = (props: {
 }) => {
   const [people, setPeople] = createStore([]);
 
-  const items = [people, setPeople];
+  const items = [
+    people,
+    {
+      addPolicePlayers: (players) => {
+        const _e = people.findIndex((es) => es.citizenid === players.citizenid);
+        if (_e !== -1) return;
+        setPeople((e) => [...e, players]);
+      },
+      changeDuty: (cid: string) => {
+        setPeople(
+          (e) => e.citizenid === cid,
+          'duty',
+          (es) => !es
+        );
+      },
+    },
+  ];
   return (
     <PlayerData.Provider value={items}>{props.children}</PlayerData.Provider>
   );

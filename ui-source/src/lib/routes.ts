@@ -1,17 +1,19 @@
 import { lazy } from 'solid-js';
-
+import Officers from '@/pages/Officers';
+import Vehicles from '@/pages/Vehicles';
+import Sos from '@/pages/Sos';
 const routes = [
   {
     path: '/',
-    component: lazy(() => import('@/pages/Officers')),
+    component: Officers,
   },
   {
     path: '/vehicles',
-    component: lazy(() => import('@/pages/Vehicles')),
+    component: Vehicles,
   },
   {
     path: '/sos',
-    component: lazy(() => import('@/pages/Sos')),
+    component: Sos,
   },
 ];
 

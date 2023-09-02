@@ -22,6 +22,7 @@ server_script {
 files {
     'config/client.lua',
     "client/data/*.lua",
+       'ui/index.js',
     'ui/*.js',
     'ui/*.css',
     'ui/index.html'

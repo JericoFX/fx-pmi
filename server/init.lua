@@ -45,7 +45,8 @@ local function sendDataToJob(name,job --[[@as string]],...)
         local Players = QBCore.Functions.GetQBPlayers()
         for src, Player in pairs(Players) do
             if Player.PlayerData.job.name == job then
-                TriggerClientEvent(name,src,table.unpack(ars))
+                print("SENDED ",json.encode(ars))
+                TriggerClientEvent(name,src,ars)
                 Wait(0)
             end
         end
@@ -59,6 +60,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
     if not checkForJob(data.PlayerData.job.name) then
         return
     end
+    print("Player Loaded!",data.PlayerData.job.name)
         pmiData[data.PlayerData.citizenid] = {
             firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
@@ -180,12 +182,13 @@ end)
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
+  
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-    pmiData[PlayerData.citizenid][information] = data
+    pmiData[PlayerData.charinfo.citizenid][information] = data
     sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
-        citizenid = PlayerData.citizenid,
+        citizenid = PlayerData.charinfo.citizenid,
         data = data
     })
 end)

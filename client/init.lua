@@ -6,21 +6,22 @@ require "client.data.handlers" ()
 
 --- Function to open the NUI.
 ---@param bool boolean - Function to open the NUI and set the focus.
----@param data table - Table with the current pmi data.
 local function openNUI(bool)
     local job,charinfo,citizenid in QBCore.Functions.GetPlayerData()
     SetNuiFocus(bool,bool)
     SendNUIMessage({
-        action = "openMDT",
-        data = Tabla,
-        mydata = {
-            firstname = charinfo.firstname,
-            lastname = charinfo.lastname,
-            citizenid = citizenid,
-            rank = job.grade.name,
-            duty = job.onduty 
-        }
-    })
+        type = "openNUI",
+        payload = {
+            open = true,
+            tabla= Tabla,
+            mydata = {
+                firstname = charinfo.firstname,
+                lastname = charinfo.lastname,
+                citizenid = citizenid,
+                rank = job.grade.name,
+                duty = job.onduty 
+        } 
+    }})
 end
 
 --- Function to close the NUI
@@ -32,7 +33,7 @@ local function closeNUI(_, cb)
 end
 
 --- Function to change the Duty.
----@param data boolean - Boolean of the duty.
+---@param data {duty:boolean} - Boolean of the duty.
 ---@param cb function - Function to pass back to the nui
 local function changeDuty(data, cb)
     local duty in data

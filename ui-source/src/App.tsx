@@ -1,210 +1,34 @@
-import { Component } from 'solid-js';
+import { Component, Show, createEffect, createSignal } from 'solid-js';
 import Container from './lib/Container';
 import Navbar from './lib/Navbar';
 import AppSpace from './lib/AppSpace';
-
 import { Router, useRoutes } from '@solidjs/router';
 import routes from './lib/routes';
-import { debugData } from './utils/debugData';
+import Nui from '@/hooks/useNuiEvent';
+import { usePlayerData } from './lib/Store';
 
 const App: Component<{}> = () => {
   const Routes = useRoutes(routes);
-  debugData([
-    {
-      action: 'openNUI',
-      data: [
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerico',
-          lastname: 'FX',
-          phone: '099999999',
-          citizenid: 'ADS12332',
-          rank: 'Liutenent',
-          callsign: 'C510',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: true,
-          assignment: false,
-        },
-        {
-          firstname: 'Jeriaco',
-          lastname: 'FsX',
-          phone: '09922222',
-          citizenid: 'ADSasddsa',
-          rank: 'Liutensent',
-          callsign: 'C5s10',
-          radio: 1,
-          vehicle: {
-            plate: 'ASD123456',
-            vehicle: 'Primo',
-          },
-          duty: false,
-          assignment: false,
-        },
-        {
-          firstname: 'Jerissco',
-          lastname: 'FX',
-          phone: 'sssss',
-          citizenid: 'ADS11232332',
-          rank: 'Liutenaent',
-          callsign: 'C510',
-          vehicle: false,
-          duty: false,
-          radio: 1,
-          assignment: {
-            message: 'JERICO',
-          },
-        },
-      ],
-    },
-  ]);
+  const [open, setOpen] = createSignal(false);
+  const [people, { addPolicePlayers }] = usePlayerData();
+  Nui.onEvent('openNUI', ({ open, tabla, mydata }): void => {
+    setOpen(open);
+  });
+  Nui.onEvent('updatePolice', ({ type, data }): void => {
+    addPolicePlayers(data);
+  });
   return (
     <div class='relative w-screen h-screen select-none'>
-      <Router>
-        <Container>
-          <Navbar></Navbar>
-          <AppSpace>
-            <Routes />
-          </AppSpace>
-        </Container>
-      </Router>
+      <Show when={open()}>
+        <Router>
+          <Container>
+            <Navbar></Navbar>
+            <AppSpace>
+              <Routes />
+            </AppSpace>
+          </Container>
+        </Router>
+      </Show>
     </div>
   );
 };

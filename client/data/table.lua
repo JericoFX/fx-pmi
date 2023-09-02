@@ -1,11 +1,11 @@
-local pmiDataClient = setmetatable({},{
-    __newindex = function(t,k,v)
-        rawset(t,k,v)
+local pmiDataClient = setmetatable({}, {
+    __newindex = function(t, k, v)
+        rawset(t, k, v)
     end,
-    __index = function(t,k)
-        return rawget(t,k)
+    __index = function(t, k)
+        return rawget(t, k)
     end,
-    __call =  function(self)
+    __call = function(self)
         return self
     end
 })

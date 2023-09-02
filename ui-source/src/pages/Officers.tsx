@@ -19,17 +19,13 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useNuiEvent } from '@/hooks/useNuiEvent';
 import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
 } from '@/components/ui/textfield';
 const Officers: Component<{}> = () => {
-  const [people, setPeople] = usePlayerData();
-  useNuiEvent('openNUI', (data) => {
-    setPeople(data);
-  });
+  const [people, { addPolicePlayers, changeDuty }] = usePlayerData();
 
   return (
     <div class='overflow-auto h-full w-full relative no-scrollbar p-3'>
@@ -57,7 +53,7 @@ const Officers: Component<{}> = () => {
               firstname: string;
               lastname: string;
               assignment: Object;
-              vehicle: Object;
+              vehicle: { vehicle: string; plate: string };
               callsign: number | null;
             }) => (
               <>
@@ -67,14 +63,7 @@ const Officers: Component<{}> = () => {
                       when={data.duty}
                       fallback={
                         <Badge
-                          onClick={() =>
-                            setPeople(
-                              (e: { citizenid: string }) =>
-                                e.citizenid === data.citizenid,
-                              'duty',
-                              (s: boolean) => !s
-                            )
-                          }
+                          onClick={() => changeDuty(data.citizenid)}
                           variant='destructive'
                         >
                           {' '}
@@ -83,14 +72,7 @@ const Officers: Component<{}> = () => {
                       }
                     >
                       <Badge
-                        onClick={() =>
-                          setPeople(
-                            (e: { citizenid: string }) =>
-                              e.citizenid === data.citizenid,
-                            'duty',
-                            (s: boolean) => !s
-                          )
-                        }
+                        onClick={() => changeDuty(data.citizenid)}
                         variant='outline'
                         class='text-white font-normal	'
                       >
