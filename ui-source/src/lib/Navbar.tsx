@@ -25,7 +25,7 @@ const Navbar: Component<{}> = () => {
           class='hover:cursor-pointer'
           color='white'
         ></IconCar>
-        <IconSos color='white'></IconSos>
+        <IconSos onClick={() => navigate('/sos')} color='white'></IconSos>
         <IconUser color='white'></IconUser>
       </div>
     </div>

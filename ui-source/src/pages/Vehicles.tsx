@@ -57,7 +57,7 @@ const Vehicles = () => {
             <CardContent class='grid grid-cols-1 gap-5'>
               <Texto title='Vehicle Owner' place='JERICOFX' />
               <Texto title='Vehicle Name' place='PRIMO' />
-              <Texto title='Vehicle Garage' place='In Garage' />
+              {/* <Texto title='Vehicle Garage' place='In Garage' /> */}
               <Badge variant='destructive'>Warrant Found</Badge>
             </CardContent>
             <CardFooter class='grid grid-cols-3 gap-3'>

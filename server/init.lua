@@ -40,11 +40,12 @@ end
 ---@param job string - Name of the job.
 ---@param ... any - All the data you want to send with the event
 local function sendDataToJob(name,job --[[@as string]],...)
+    local ars = {...}
     Citizen.CreateThreadNow(function() 
         local Players = QBCore.Functions.GetQBPlayers()
         for src, Player in pairs(Players) do
             if Player.PlayerData.job.name == job then
-                TriggerClientEvent(name,src,...)
+                TriggerClientEvent(name,src,table.unpack(ars))
                 Wait(0)
             end
         end
@@ -88,7 +89,7 @@ AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
         sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
         pmiData[Player.PlayerData.citizenid] = nil
         return 
-    elseif not pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name)
+    elseif not pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name) then
         -- If his not in the table and not a police then return it
         print("Player isnt a police and he is not on the table")
         return

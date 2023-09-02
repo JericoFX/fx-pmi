@@ -1,3 +1,4 @@
+local random = math.random
 local util = {}
 local Types = {
     string  = function(value)
@@ -19,7 +20,7 @@ function util.type(value,expected)
     return value
 end
 
-function utils.uuid(n)
+function util.uuid(n)
     n = n or 4
     local template = string.rep('x', n) .. 'xxxx4xxxyxxxxxxxxxxxxxxx'
     return string.gsub(template, '[xy]', function(c)

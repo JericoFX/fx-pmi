@@ -12,8 +12,24 @@ import { usePlayerData } from '@/lib/Store';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { IconCar, IconShield, IconShieldFilled } from '@tabler/icons-solidjs';
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { useNuiEvent } from '@/hooks/useNuiEvent';
+import {
+  TextField,
+  TextFieldInput,
+  TextFieldLabel,
+} from '@/components/ui/textfield';
 const Officers: Component<{}> = () => {
   const [people, setPeople] = usePlayerData();
+  useNuiEvent('openNUI', (data) => {
+    setPeople(data);
+  });
 
   return (
     <div class='overflow-auto h-full w-full relative no-scrollbar p-3'>
@@ -100,16 +116,58 @@ const Officers: Component<{}> = () => {
                   </TableCell>
                   <TableCell class='text-white text-center'>
                     <Show
-                      when={!data.vehicle && data.duty}
+                      when={data.vehicle && data.duty}
                       fallback={
                         <Button disabled>
                           <IconCar></IconCar>
                         </Button>
                       }
                     >
-                      <Button>
-                        <IconCar></IconCar>
-                      </Button>
+                      <Popover>
+                        <PopoverTrigger as={Button}>
+                          {' '}
+                          <IconCar></IconCar>
+                        </PopoverTrigger>
+                        <PopoverContent class='w-80 bg-foreground'>
+                          <div class='grid gap-4'>
+                            <PopoverTitle class='space-y-2'>
+                              <h4 class='font-medium leading-none text-background'>
+                                Vehicle
+                              </h4>
+                              <p class='text-sm text-muted-foreground'>
+                                Current Vehicle: {data.citizenid}
+                              </p>
+                            </PopoverTitle>
+                            <PopoverDescription class='grid gap-2'>
+                              <TextField class='grid grid-cols-3 items-center gap-4'>
+                                <TextFieldLabel class='text-right text-background'>
+                                  Vehicle
+                                </TextFieldLabel>
+                                <TextFieldInput
+                                  readOnly
+                                  value={data.vehicle.vehicle}
+                                  class='col-span-2 h-8 text-foreground'
+                                />
+                              </TextField>
+                              <TextField class='grid grid-cols-3 items-center gap-4'>
+                                <TextFieldLabel class='text-right text-background'>
+                                  Plate
+                                </TextFieldLabel>
+
+                                <TextFieldInput
+                                  readonly
+                                  value={data.vehicle.plate}
+                                  class='col-span-2 h-8 text-foreground'
+                                />
+                              </TextField>
+
+                              <div>
+                                <Button class='col-span-3 h-8'>Location</Button>
+                              </div>
+                            </PopoverDescription>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </Show>
                   </TableCell>
                   <TableCell class='text-white text-center'>
@@ -121,9 +179,59 @@ const Officers: Component<{}> = () => {
                         </Button>
                       }
                     >
-                      <Button>
-                        <IconShieldFilled></IconShieldFilled>
-                      </Button>
+                      <Popover>
+                        <PopoverTrigger as={Button}>
+                          {' '}
+                          <IconShieldFilled></IconShieldFilled>
+                        </PopoverTrigger>
+                        <PopoverContent class='w-80'>
+                          <div class='grid gap-4'>
+                            <PopoverTitle class='space-y-2'>
+                              <h4 class='font-medium leading-none'>
+                                Assignment
+                              </h4>
+                              <p class='text-sm text-muted-foreground'>
+                                Current Assign for CID: {data.citizenid}
+                              </p>
+                            </PopoverTitle>
+                            <PopoverDescription class='grid gap-2'>
+                              <TextField class='grid grid-cols-3 items-center gap-4'>
+                                <TextFieldLabel class='text-right'>
+                                  Code
+                                </TextFieldLabel>
+                                <TextFieldInput
+                                  readOnly
+                                  value='10-78'
+                                  class='col-span-2 h-8'
+                                />
+                              </TextField>
+                              <TextField class='grid grid-cols-3 items-center gap-4'>
+                                <TextFieldLabel class='text-right'>
+                                  Adress
+                                </TextFieldLabel>
+                                <TextFieldInput
+                                  readonly
+                                  value='Saint Rows'
+                                  class='col-span-2 h-8'
+                                />
+                              </TextField>
+                              <TextField class='grid grid-cols-3 items-center gap-4'>
+                                <TextFieldLabel class='text-right'>
+                                  Message
+                                </TextFieldLabel>
+                                <TextFieldInput
+                                  readOnly
+                                  value='Somebody is Dead here'
+                                  class='col-span-2 h-8 text-ellipsis'
+                                />
+                              </TextField>
+                              <div>
+                                <Button class='col-span-3 h-8'>Location</Button>
+                              </div>
+                            </PopoverDescription>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </Show>
                   </TableCell>
                 </TableRow>
