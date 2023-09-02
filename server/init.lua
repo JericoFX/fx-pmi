@@ -103,7 +103,7 @@ AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
         rank = Player.PlayerData.job.grade.name,
         callsign = Player.PlayerData.metadata.callsign,
         vehicle = "",
-        duty = Player.PlayerData.job.duty,
+        duty = Player.PlayerData.job.onduty,
         assignment = false
     }
 
@@ -115,7 +115,7 @@ AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
         rank = Player.PlayerData.job.grade.name,
         callsign = Player.PlayerData.metadata.callsign,
         vehicle = "",
-        duty = Player.PlayerData.job.duty,
+        duty = Player.PlayerData.job.onduty,
         assignment = false
     })
 end)
@@ -133,7 +133,8 @@ lib.callback.register("fx::pmi::server::getPlayerInfo",function(source,id)
                 lastname = PlayerData.charinfo.lastname,
                 phone = PlayerData.charinfo.phone,
                 citizenid = PlayerData.citizenid,
-                rank = PlayerData.job.grade.name
+                rank = PlayerData.job.grade.name,
+                duty = PlayerData.job.onduty
             }
         else
         -- Player is not online

@@ -16,6 +16,7 @@ function db.GrabByCitizenID(id)
     --https://overextended.github.io/docs/oxmysql/Usage/single
     local variable = MySQL.single.await(QUERY_STRINGS.PlayerByID, {_id})
     if not variable  then return false end
+    variable.duty = false
     return variable
 end
 

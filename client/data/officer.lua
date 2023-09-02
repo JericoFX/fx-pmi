@@ -5,6 +5,7 @@ local Officers = {}
 function Officers.changeDuty(state)
     if type(state) ~= "boolean" then return nil end
     TriggerServerEvent("fx::pmi::server::updatePmiInformation","duty",state)
+    TriggerServerEvent('QBCore:ToggleDuty')
 end
 
 --- Get the player information.

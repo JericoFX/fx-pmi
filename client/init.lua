@@ -18,7 +18,7 @@ local function openNUI(bool)
             lastname = charinfo.lastname,
             citizenid = citizenid,
             rank = job.grade.name,
-            duty = job.duty
+            duty = job.onduty 
         }
     })
 end
