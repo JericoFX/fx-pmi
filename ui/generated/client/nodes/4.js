@@ -1,0 +1,1 @@
+export { default as component } from "../../../../ui-source/src/routes/vehicle/+page.svelte";
