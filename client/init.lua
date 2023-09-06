@@ -1,7 +1,7 @@
-local QBCore = exports["qb-core"]:GetCoreObject()
+local QBCore = require "client.data.core"
 local Player = require "client.data.officer"
 local Vehicle = require "client.data.vehicles"
-local Tabla = require "client.data.table"
+local Table = require "client.data.table"
 require "client.data.handlers" ()
 
 --- Function to open the NUI.
@@ -13,14 +13,14 @@ local function openNUI(bool)
         type = "openNUI",
         payload = {
             open = true,
-            tabla= Tabla,
+            tabla= Table.getTableValue(),
             mydata = {
                 firstname = charinfo.firstname,
                 lastname = charinfo.lastname,
                 citizenid = citizenid,
                 rank = job.grade.name,
-                duty = job.onduty 
-        } 
+                duty = job.onduty
+            } 
     }})
 end
 
@@ -41,6 +41,9 @@ local function changeDuty(data, cb)
     cb(Player.changeDuty(duty))
 end
 
+local function getData(data,cb)
+    cb(Table.getTableValue() or {})
+end
 --- Function to get a X player info.
 ---@param {citizenid:string} - Citizenid of the target player.
 ---@param cb function - Function to pass back to the nui
@@ -66,6 +69,9 @@ RegisterCommand("openpmi", function(source, args)
     end)
 end, false)
 
+RegisterCommand("vehs", function(source, args)
+    local _veh = Player.getPlayerInformation(args[1])
+end, false)
 
 AddEventHandler("onResourceStop", function(res)
     if not GetCurrentResourceName() == res then return end
@@ -76,4 +82,4 @@ RegisterNUICallback("closeNUI",closeNUI)
 RegisterNUICallback("changeDuty",changeDuty)
 RegisterNUICallback("searchVehicle",searchVehicle)
 RegisterNUICallback("getPlayerInfo",getPlayerInfo)
-
+RegisterNUICallback("getData",getData)

@@ -13,6 +13,30 @@ local function checkForJob(player)
     return Config.Job[player]
 end
 
+local function deleteFromTable(value)
+    local contiene = lib.table.contains(pmiData,value)
+    if not contiene then return end
+    for i = 0,#pmiData do
+        local el = pmiData[i]
+        if el.citizenid == value then
+            el = nil
+        end
+    end
+end
+
+local function updateTableValue(cid,information,value)
+ local contiene = lib.table.contains(pmiData,value)
+    if not contiene then return false end
+    for i = 0,#pmiData do
+        local el = pmiData[i]
+        if el.citizenid == cid then
+            el[information] = value
+            return true
+        end
+    end
+    return false
+end
+
 --- Function to get the vehicle from a plate, im not sure about this one, a thread and a promise?, a promise need a corutine?,God knows...
 ---@param plate string - Plate of the vehicle.
 ---@return (number|boolean)
@@ -46,7 +70,7 @@ local function sendDataToJob(name,job --[[@as string]],...)
         for src, Player in pairs(Players) do
             if Player.PlayerData.job.name == job then
                 print("SENDED ",json.encode(ars))
-                TriggerClientEvent(name,src,ars)
+                TriggerClientEvent(name,src,table.unpack(ars))
                 Wait(0)
             end
         end
@@ -61,7 +85,7 @@ AddEventHandler("QBCore:Server:PlayerLoaded",function(data)
         return
     end
     print("Player Loaded!",data.PlayerData.job.name)
-        pmiData[data.PlayerData.citizenid] = {
+        pmiData[#pmiData+1] = {
             firstname = data.PlayerData.charinfo.firstname,
             lastname = data.PlayerData.charinfo.lastname,
             phone = data.PlayerData.charinfo.phone,
@@ -79,36 +103,40 @@ end)
 
 AddEventHandler("QBCore:Server:OnPlayerUnload",function(src)
     local Player = QBCore.Functions.GetPlayer(src)
-    pmiData[Player.PlayerData.citizenid] = nil
+    deleteFromTable(Player.PlayerData.citizenid)
     sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
 end)
 
 AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
     local Player = QBCore.Functions.GetPlayer(src)
-    if  pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name) then
+    local cid = lib.table.contains(pmiData,Player.PlayerData.citizenid)
+    if  cid and not checkForJob(job.name) then
         -- If the player changed his job and before that was a police, lets clean the table
-        print("Player was a police ")
+        print("Player was a police, cleaning table")
         sendDataToJob("fx::pmi::client::removePlayerToTablet","police",{citizenid = Player.PlayerData.citizenid})
-        pmiData[Player.PlayerData.citizenid] = nil
-        return 
-    elseif not pmiData[Player.PlayerData.citizenid] and not checkForJob(job.name) then
+        deleteFromTable(Player.PlayerData.citizenid)
+       -- pmiData[Player.PlayerData.citizenid] = nil
+        return
+    elseif not cid and not checkForJob(job.name) then
         -- If his not in the table and not a police then return it
         print("Player isnt a police and he is not on the table")
         return
     end
 
-    pmiData[Player.PlayerData.citizenid] = {
+  
+
+    pmiData[#pmiData+1]= {
         firstname = Player.PlayerData.charinfo.firstname,
         lastname = Player.PlayerData.charinfo.lastname,
         phone = Player.PlayerData.charinfo.phone,
         citizenid = Player.PlayerData.citizenid,
         rank = Player.PlayerData.job.grade.name,
         callsign = Player.PlayerData.metadata.callsign,
-        vehicle = "",
+        vehicle = nil,
         duty = Player.PlayerData.job.onduty,
         assignment = false
     }
-
+  
     sendDataToJob("fx::pmi::client::addPlayerToTablet","police",{
         firstname = Player.PlayerData.charinfo.firstname,
         lastname = Player.PlayerData.charinfo.lastname,
@@ -116,7 +144,7 @@ AddEventHandler("QBCore:Server:OnJobUpdate",function(src,job)
         citizenid = Player.PlayerData.citizenid,
         rank = Player.PlayerData.job.grade.name,
         callsign = Player.PlayerData.metadata.callsign,
-        vehicle = "",
+        vehicle = nil,
         duty = Player.PlayerData.job.onduty,
         assignment = false
     })
@@ -182,13 +210,12 @@ end)
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
-  
     if not updateInformation[tostring(information)] then return end
     local PlayerData in QBCore.Functions.GetPlayer(source)
     if not PlayerData or not checkForJob(PlayerData.job.name) then return end
-    pmiData[PlayerData.charinfo.citizenid][information] = data
+    updateTableValue(PlayerData.charinfo.citizenid,information,data)
     sendDataToJob("fx::pmi::client::updatePmiInformation","police",information,{
-        citizenid = PlayerData.charinfo.citizenid,
+        citizenid = PlayerData.citizenid,
         data = data
     })
 end)
@@ -203,7 +230,7 @@ end)
 ---@param g boolean Networked?
 AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
     local player = GetPlayerFromStateBagName(a)
-    print("PLAYER IS: ",player)
+    print("PLAYER IS: ",a,s,d,f,g)
     if f ~= 0 then
         print("CLIENT MODIFIED A STATE BAG",a,s,d,f,g)
         return

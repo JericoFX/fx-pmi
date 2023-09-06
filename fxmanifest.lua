@@ -22,8 +22,9 @@ server_script {
 files {
     'config/client.lua',
     "client/data/*.lua",
-       'ui/index.js',
-    'ui/*.js',
-    'ui/*.css',
+    'ui/_app/immutable/**/*.js',
+    'ui/_app/version.json',
+    'ui/_app/immutable/**/*.css',
+    'ui/_app/immutable/entry/*.js',
     'ui/index.html'
 }
