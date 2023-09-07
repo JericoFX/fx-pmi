@@ -10,8 +10,8 @@ local function openNUI(bool)
     local job,charinfo,citizenid in QBCore.Functions.GetPlayerData()
     SetNuiFocus(bool,bool)
     SendNUIMessage({
-        type = "openNUI",
-        payload = {
+        action = "openNUI",
+        data = {
             open = true,
             tabla= Table.getTableValue(),
             mydata = {

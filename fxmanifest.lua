@@ -8,7 +8,7 @@ description 'A Police Management Interface created with svelte'
 license 'GNU'
 author 'JericoFX'
 
-ui_page "ui/index.html"
+ui_page "build/index.html"
 
 client_script "client/init.lua"
 
@@ -20,11 +20,11 @@ server_script {
 }
 
 files {
+    'build/index.html',
     'config/client.lua',
     "client/data/*.lua",
-    'ui/_app/immutable/**/*.js',
-    'ui/_app/version.json',
-    'ui/_app/immutable/**/*.css',
-    'ui/_app/immutable/entry/*.js',
-    'ui/index.html'
+    'build/_app/immutable/**/*.js',
+    'build/_app/version.json',
+    'build/_app/immutable/**/*.css',
+    'build/_app/immutable/entry/*.js',
 }
