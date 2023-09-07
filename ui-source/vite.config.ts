@@ -6,10 +6,12 @@ export default defineConfig({
   plugins: [svelte(), UnoCSS()],
   base: '',
   build: {
-    minify: true,
+    minify: 'esbuild',
     emptyOutDir: true,
     outDir: '../ui',
     assetsDir: './',
+    cssCodeSplit: true,
+    cssMinify: true,
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,

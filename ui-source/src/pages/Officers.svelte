@@ -17,7 +17,22 @@
     FormInput,
   } from 'yesvelte';
   import store from '../lib/utils/store';
+  import Modals from '../lib/pages/Modals.svelte';
   const { playerData } = store();
+
+  const openModal = (data: boolean | { plate: string; vehicle: string }) => {
+    let open = true;
+    const m = new Modals({
+      target: document.body,
+      props: {
+        show: open,
+        vehicleData: {
+          vehicle: data.vehicle,
+          plate: data.plate,
+        },
+      },
+    });
+  };
 </script>
 
 <main class="w-full h-full relative rounded overflow-scroll">
@@ -52,15 +67,17 @@
           <TableCell>{data.radio}</TableCell>
           <TableCell
             >{#if data.vehicle}
-              <Button><Icon name="car" /></Button>
+              <Button on:click={() => openModal(data.vehicle)}
+                ><Icon name="car" /></Button
+              >
             {:else}
               <Button disabled><Icon name="car" /></Button>
             {/if}
           </TableCell>
           <TableCell
             >{#if data.assignment}
-              <Button
-                ><Icon name="car" />
+              <Button>
+                <Icon name="checklist" />
                 <Popover>
                   <PopoverHeader
                     >Code: <Status color="youtube">10-5</Status></PopoverHeader
@@ -84,7 +101,7 @@
                 </Popover>
               </Button>
             {:else}
-              <Button disabled><Icon name="car" /></Button>
+              <Button disabled><Icon name="checklist" /></Button>
             {/if}</TableCell
           >
         </TableRow>
