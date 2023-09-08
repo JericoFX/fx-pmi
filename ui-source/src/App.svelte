@@ -12,7 +12,7 @@
   />
 </svelte:head>
 <main class="w-screen h-screen relative">
-  <div class="w-55vw h-70vh absolute-center rounded">
+  <div class="w-55vw h-70vh absolute-center rounded shadow-sm shadow-dark">
     <Navbar />
     <Container />
   </div>

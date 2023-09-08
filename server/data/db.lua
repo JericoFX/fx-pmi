@@ -9,7 +9,7 @@ local QUERY_STRINGS = {
 
 --- Function to grab the player by citizenid IF the player isnt connected
 ---@param id string - Citizenid from the player
----@return table
+---@return table | boolean
 function db.GrabByCitizenID(id)
     if not id then return false end
     local _id = util.type(id,"string")
@@ -22,9 +22,9 @@ end
 
 --- Function to grab the player info by giving a plate
 ---@param plate string - plate from the vehicle
----@return table
+---@return table | boolean
 function db.GrabByPlate(plate)
-    if not plate then return end
+    if not plate then return false end
     local _plate = util.type(plate,"string")
     local variable = MySQL.single.await(QUERY_STRINGS.VehicleByPlate, {_plate})
     if not variable then return false end
