@@ -1,9 +1,12 @@
+import { wrap } from 'svelte-spa-router/wrap';
 import Officers from '../../pages/Officers.svelte';
 
 const routes = {
   // Exact path
   '/': Officers,
-
+  '/vehicle': wrap({
+    asyncComponent: () => import('../../pages/Vehicles.svelte'),
+  }),
   // // Using named parameters, with last being optional
   // '/author/:first/:last?': Author,
 

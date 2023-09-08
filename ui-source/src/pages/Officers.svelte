@@ -9,15 +9,14 @@
     TableCell,
     TableHead,
     TableRow,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
     Status,
-    Input,
     FormInput,
+    ButtonGroup,
   } from 'yesvelte';
+
   import store from '../lib/utils/store';
   import Modals from '../lib/pages/Modals.svelte';
+  import Popover from '../lib/pages/Popover.svelte';
   const { playerData } = store();
 
   const openModal = (data: boolean | { plate: string; vehicle: string }) => {
@@ -66,40 +65,56 @@
           <TableCell>{data.citizenid}</TableCell>
           <TableCell>{data.radio}</TableCell>
           <TableCell
-            >{#if data.vehicle}
-              <Button on:click={() => openModal(data.vehicle)}
-                ><Icon name="car" /></Button
-              >
+            >{#if data.vehicle && data.duty}
+              <Button><Icon name="car" /></Button>
+              <Popover>
+                <FormInput
+                  col="12"
+                  label="Vehicle Name:"
+                  size="md"
+                  readonly
+                  value={data.vehicle.vehicle}
+                />
+                <FormInput
+                  col="12"
+                  label="Vehicle Plate:"
+                  size="md"
+                  readonly
+                  value={data.vehicle.plate}
+                />
+                <ButtonGroup>
+                  <Button>
+                    <slot name="end">
+                      <Icon name="gps" />
+                    </slot>
+                  </Button>
+                </ButtonGroup>
+              </Popover>
             {:else}
               <Button disabled><Icon name="car" /></Button>
             {/if}
           </TableCell>
           <TableCell
-            >{#if data.assignment}
+            >{#if data.assignment && data.duty}
               <Button>
                 <Icon name="checklist" />
-                <Popover>
-                  <PopoverHeader
-                    >Code: <Status color="youtube">10-5</Status></PopoverHeader
-                  >
-                  <PopoverBody>
-                    <FormInput
-                      col="12"
-                      label="Street:"
-                      size="md"
-                      readonly
-                      value={data.assignment.street}
-                    />
-                    <FormInput
-                      col="12"
-                      label="Message:"
-                      size="md"
-                      readonly
-                      value={data.assignment.message}
-                    />
-                  </PopoverBody>
-                </Popover>
               </Button>
+              <Popover header="Code 10-05">
+                <FormInput
+                  col="12"
+                  label="Street:"
+                  size="md"
+                  readonly
+                  value={data.assignment.street}
+                />
+                <FormInput
+                  col="12"
+                  label="Message:"
+                  size="md"
+                  readonly
+                  value={data.assignment.message}
+                />
+              </Popover>
             {:else}
               <Button disabled><Icon name="checklist" /></Button>
             {/if}</TableCell
