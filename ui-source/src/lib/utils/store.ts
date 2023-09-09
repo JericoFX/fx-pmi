@@ -189,6 +189,88 @@ const store = () => {
     open: writable<boolean>(false),
     currentPage: writable('officer'),
     darkMode: writable(true),
+    reports: writable([
+      {
+        id: 1,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: 'lorem',
+      },
+      {
+        id: 2,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 3,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 4,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 5,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 6,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 7,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 8,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 9,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+      {
+        id: 10,
+        code: '10-50',
+        street: 'BOULEVARD DE LOS SUEÑOS ROTOS',
+        taked: false,
+        callsign: '',
+        message: '',
+      },
+    ]),
   };
   const { update, subscribe, set } = writable(data);
   const methods = {
@@ -220,6 +302,28 @@ const store = () => {
     changeDarkMode: (da) => {
       data.darkMode.update((e) => {
         e = da;
+        e = e;
+        return e;
+      });
+    },
+    addNewReport: (rep) => {
+      data.reports.update((e) => {
+        e = [...e, rep];
+        return e;
+      });
+    },
+    deleteReport: (id: string | number) => {
+      data.reports.update((e) => {
+        const _d = e.filter((d) => d.id !== id)[0];
+        e = [..._d];
+        return e;
+      });
+    },
+    markReport: (callsign: string, taken: boolean, id: string | number) => {
+      data.reports.update((e) => {
+        const _d = e.findIndex((d) => d.id === id);
+        console.log(_d);
+        e[_d] = { ...e[_d], taked: taken, callsign: callsign };
         e = e;
         return e;
       });

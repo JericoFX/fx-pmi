@@ -11,36 +11,49 @@
     ButtonGroup,
     Button,
   } from 'yesvelte';
+  import store from '../lib/utils/store';
+  const { reports, markReport } = store();
 </script>
 
 <section class="w-full h-full relative overflow-scroll">
   <El tag="h1" class=" text-2vw w-full">Reports</El>
   <!-- <Fieldset class="h-full"> -->
   <Accordions>
-    {#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as d}
+    {#each $reports as data, i (data.id)}
       <Accordion>
         <AccordionHeader
           >CODE: <span class="ml-3"
-            ><Badge color="youtube">10-{d}</Badge>
-            {#if d % 2 !== 0}
+            ><Badge color="youtube">{data.code}</Badge>
+            {#if data.taked === false}
+              <Badge color="green">Not Taked</Badge>
+            {:else}
               <Badge color="primary"
                 >Assigned to:
-                {d}</Badge
+                {data.callsign}</Badge
               >
-            {:else}
-              <Badge color="green">Not Taked</Badge>
             {/if}
           </span></AccordionHeader
         >
         <AccordionBody>
           <p><Label for="id-message">Message:</Label></p>
-          <Fieldset id="id-message">{d}</Fieldset>
+          <Fieldset id="id-message">{data.message}</Fieldset>
           <p><Label for="id-street">Street:</Label></p>
-          <Fieldset id="id-street">Hola</Fieldset>
+          <Fieldset id="id-street">{data.street}</Fieldset>
           <El row>
             <ButtonGroup>
               <Button>Locate</Button>
-              <Button>Take</Button>
+              <Button
+                disabled={data.taked}
+                on:click={() => markReport('ASD12345', true, data.id)}
+                >Take</Button
+              >
+              {#if data.taked}
+                <Button
+                  color="youtube"
+                  on:click={() => markReport('ASD12345', false, data.id)}
+                  >Release</Button
+                >
+              {/if}
             </ButtonGroup>
           </El>
         </AccordionBody>
