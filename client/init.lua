@@ -13,7 +13,7 @@ local function openNUI(bool)
         action = "openNUI",
         data = {
             open = true,
-            tabla= Table.getTableValue(),
+            tabla = Table.getTableValue(),
             mydata = {
                 firstname = charinfo.firstname,
                 lastname = charinfo.lastname,
@@ -61,6 +61,12 @@ local function searchVehicle(data, cb)
     if not plate then return cb(nil) end
     local _veh = Vehicle.getVehicleByPlate(plate,blip or nil)
     cb(_veh)
+end
+
+local function callsignUpdater(data, cb)
+    local callsign in data
+    local _call = Player.changeCallSign(callsign)
+    cb(_call)
 end
 
 RegisterCommand("openpmi", function(source, args)

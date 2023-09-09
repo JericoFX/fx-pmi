@@ -1,6 +1,13 @@
 import { writable, type Writable } from 'svelte/store';
 
 import type { PlayersData, MyData } from './types';
+export const myData = writable<MyData>({
+  duty: false,
+  firstname: "",
+  lastname: "",
+  citizenid: "",
+  callsign:""
+})
 const store = () => {
   const data = {
     playerData: writable([
@@ -185,7 +192,7 @@ const store = () => {
         },
       },
     ]),
-    myData: writable<Writable<MyData>>({}),
+  
     open: writable<boolean>(false),
     currentPage: writable('officer'),
     darkMode: writable(true),
@@ -274,8 +281,16 @@ const store = () => {
   };
   const { update, subscribe, set } = writable(data);
   const methods = {
-    setData: (datas: PlayersData[]) => {
+    setData: (datas) => {
       data.playerData.set(datas);
+    },
+    updateCallsign:(call:string)=>{
+      data.myData.update(e=>{
+        console.log(e)
+        e.callsign = call
+
+        return e
+      })
     },
     updateDuty: (cid: string, duty: boolean) => {
       data.playerData.update((e) => {
@@ -288,10 +303,10 @@ const store = () => {
         return e;
       });
     },
-    changeVehicle: (cid) => {
+    changeVehicle: (cid:string) => {
       data.playerData.update((e) => {
         const _d = e.filter((s) => s.citizenid === cid)[0];
-        _d.vehicle = null;
+        _d.vehicle = false;
         e = e;
         return e;
       });
@@ -299,7 +314,7 @@ const store = () => {
     changeNUI: (op: boolean) => {
       data.open.set(op);
     },
-    changeDarkMode: (da) => {
+    changeDarkMode: (da:boolean) => {
       data.darkMode.update((e) => {
         e = da;
         e = e;
@@ -331,6 +346,7 @@ const store = () => {
         return e;
       });
     },
+
   };
   return {
     update,

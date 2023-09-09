@@ -4,13 +4,13 @@ return function()
     local Table = require "client.data.table"
 
     --- pmi-voice Handler
-    AddStateBagChangeHandler("radioChannel", nil, function(a, s, value, f, g)
-        TriggerServerEvent("fx::pmi::server::updatePmiInformation", "radio", value)
+    AddStateBagChangeHandler(nil, nil, function(data)
+        print(json.encode(data,{indent=true}))
     end)
 
-    AddStateBagChangeHandler(nil, nil, function(bagName, algo, value, f, g)
-        print("GLOBALSTATE", bagName, algo, json.encode(value))
-    end)
+    -- AddStateBagChangeHandler(nil, nil, function(bagName, algo, value, f, g)
+    --     print("GLOBALSTATE", bagName, algo, json.encode(value))
+    -- end)
 
     RegisterNetEvent("fx::pmi::client::setTable")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::setTable", function(data)

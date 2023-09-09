@@ -11,7 +11,7 @@
     ButtonGroup,
     Button,
   } from 'yesvelte';
-  import store from '../lib/utils/store';
+  import store,{myData} from '../lib/utils/store';
   const { reports, markReport } = store();
 </script>
 
@@ -19,7 +19,7 @@
   <El tag="h1" class=" text-2vw w-full">Reports</El>
   <!-- <Fieldset class="h-full"> -->
   <Accordions>
-    {#each $reports as data, i (data.id)}
+    {#each $reports as data  (data.id)}
       <Accordion>
         <AccordionHeader
           >CODE: <span class="ml-3"
@@ -44,13 +44,13 @@
               <Button>Locate</Button>
               <Button
                 disabled={data.taked}
-                on:click={() => markReport('ASD12345', true, data.id)}
+                on:click={() => markReport($myData.callsign, true, data.id)}
                 >Take</Button
               >
               {#if data.taked}
                 <Button
                   color="youtube"
-                  on:click={() => markReport('ASD12345', false, data.id)}
+                  on:click={() => markReport($myData.callsign, false, data.id)}
                   >Release</Button
                 >
               {/if}

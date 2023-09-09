@@ -14,4 +14,5 @@ export interface MyData {
 	firstname: string;
 	lastname: string;
 	citizenid: string;
+	callsign:string
 }

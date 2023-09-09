@@ -16,4 +16,10 @@ function Officers.getPlayerInformation(id)
     return status
 end
 
+function Officers.changeCallSign(callsign)
+    if not callsign then return false end
+local val = lib.callback.await("fx::pmi::server::changeCallSign",nil,tostring(callsign))
+    return val
+end
+
 return Officers

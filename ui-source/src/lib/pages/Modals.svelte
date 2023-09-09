@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import { Button, FormInput, Modal, ModalBody, ModalFooter } from 'yesvelte';
 
   export let show = false;
-  export let vehicleData = {};
+  export let vehicleData:{vehicle:string,plate:string} = {};
 </script>
 
 <Modal title="Center Modal" placement="center" bind:show>

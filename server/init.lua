@@ -207,6 +207,14 @@ lib.callback.register("fx::pmi::server::doesVehicleExist",function(source,plate)
     return _entity and GetEntityCoords(_entity) or false
 end)
 
+lib.callback.register("fx::pmi::server::changeCallSign",function(source,callsign) 
+    if not source or not plate then return end
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not checkForJob(Player.PlayerData.job.name) then return end
+    Player.Functions.SetMetaData("callsign", callsign)
+    return true
+end)
+
 --- Event that handle all the modifications on the player.
 ---@param information string - The data to modify must be "duty","vehicle","callsign","assignment"
 RegisterNetEvent("fx::pmi::server::updatePmiInformation",function(information,data)
@@ -222,15 +230,12 @@ end)
 
 ---  This is the only way that i found to check if the player on client side modified a state bag.
 --- argument F is the payload size, server > client is 0, client > server is 2048
---- I can't set a DropPlayer because PMA uses it.
 ---@param a string Player number (server)
 ---@param s string Name of the bag.
 ---@param d any Value of the bag modified.
 ---@param f number payload size
 ---@param g boolean Networked?
 AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
-    local player = GetPlayerFromStateBagName(a)
-    print("PLAYER IS: ",a,s,d,f,g)
     if f ~= 0 then
         print("CLIENT MODIFIED A STATE BAG",a,s,d,f,g)
         return
