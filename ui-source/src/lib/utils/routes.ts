@@ -7,6 +7,9 @@ const routes = {
   '/vehicle': wrap({
     asyncComponent: () => import('../../pages/Vehicles.svelte'),
   }),
+  '/reports': wrap({
+    asyncComponent: () => import('../../pages/Reports.svelte'),
+  }),
   // // Using named parameters, with last being optional
   // '/author/:first/:last?': Author,
 

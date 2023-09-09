@@ -32,6 +32,7 @@
       size={$currentPage === 'officer' ? '2x' : '1x'}
     />
     <Icon
+      on:click={() => push('/reports')}
       class="hover:cursor-pointer"
       name="sword"
       size={$currentPage === 'officer' ? '2x' : '1x'}
