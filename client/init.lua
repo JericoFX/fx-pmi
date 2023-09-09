@@ -41,9 +41,6 @@ local function changeDuty(data, cb)
     cb(Player.changeDuty(duty))
 end
 
-local function getData(data,cb)
-    cb(Table.getTableValue() or {})
-end
 --- Function to get a X player info.
 ---@param {citizenid:string} - Citizenid of the target player.
 ---@param cb function - Function to pass back to the nui
@@ -88,4 +85,3 @@ RegisterNUICallback("closeNUI",closeNUI)
 RegisterNUICallback("changeDuty",changeDuty)
 RegisterNUICallback("searchVehicle",searchVehicle)
 RegisterNUICallback("getPlayerInfo",getPlayerInfo)
-RegisterNUICallback("getData",getData)

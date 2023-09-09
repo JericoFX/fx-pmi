@@ -5,7 +5,7 @@ return function()
 
     --- pmi-voice Handler
     AddStateBagChangeHandler(nil, nil, function(data)
-        print(json.encode(data,{indent=true}))
+        print(json.encode(data, { indent = true }))
     end)
 
     -- AddStateBagChangeHandler(nil, nil, function(bagName, algo, value, f, g)
@@ -28,8 +28,8 @@ return function()
         end
         Table.updateTableIndex(data)
         SendNUIMessage({
-            type = "updatePolice",
-            payload = {
+            action = "updatePolice",
+            data = {
                 type = "add",
                 data = data
             }
@@ -55,8 +55,8 @@ return function()
             if type(data) == "table" and data.data then
                 print(data.data.vehicle, data.data.plate)
                 SendNUIMessage({
-                    type = information,
-                    payload = {
+                    action = information,
+                    data = {
                         info = "add",
                         citizenid = data.citizenid,
                         vehicle = data.data.vehicle,
@@ -65,8 +65,8 @@ return function()
                 })
             else
                 SendNUIMessage({
-                    type = information,
-                    payload = {
+                    action = information,
+                    data = {
                         info = "remove",
                         citizenid = data.citizenid,
                         vehicle = nil
