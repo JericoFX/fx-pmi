@@ -314,8 +314,11 @@ const store = () => {
     },
     deleteReport: (id: string | number) => {
       data.reports.update((e) => {
-        const _d = e.filter((d) => d.id !== id)[0];
-        e = [..._d];
+        let datas = e.findIndex((d) => d.id === id);
+        if (e.some((d) => d.id === id)) {
+          e.splice(datas, 1);
+        }
+        e = e;
         return e;
       });
     },
