@@ -9,6 +9,193 @@ export const myData = writable<MyData>({
   citizenid: '',
   callsign: '',
 });
+
+export const playerDatas = writable(
+  isEnvBrowser()
+    ? [
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123321',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123322',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123323',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123324',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123325',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123326',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123327',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD1234568',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123329',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS123320',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerico',
+          lastname: 'FX',
+          phone: '099999999',
+          citizenid: 'ADS1233211',
+          rank: 'Liutenent',
+          callsign: 'C510',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: true,
+          assignment: false,
+        },
+        {
+          firstname: 'Jeriaco',
+          lastname: 'FsX',
+          phone: '09922222',
+          citizenid: 'ADSasddsa12',
+          rank: 'Liutensent',
+          callsign: 'C5s10',
+          radio: 1,
+          vehicle: {
+            plate: 'ASD123456',
+            vehicle: 'Primo',
+          },
+          duty: false,
+          assignment: false,
+        },
+        {
+          firstname: 'Jerissco',
+          lastname: 'FX',
+          phone: 'sssss',
+          citizenid: 'ADS11232332123',
+          rank: 'Liutenaent',
+          callsign: 'C510',
+          vehicle: false,
+          duty: false,
+          radio: 1,
+          assignment: {
+            message: 'JERICO',
+            street: 'BOULEVAR WACHO',
+          },
+        },
+      ]
+    : []
+);
 const store = () => {
   const data = {
     playerData: writable(
@@ -289,35 +476,13 @@ const store = () => {
   };
   const { update, subscribe, set } = writable(data);
   const methods = {
-    setData: (
-      datas: (
-        | {
-            firstname: string;
-            lastname: string;
-            phone: string;
-            citizenid: string;
-            rank: string;
-            callsign: string;
-            radio: number;
-            vehicle: boolean | { plate: string; vehicle: string };
-            duty: boolean;
-            assignment: boolean;
-          }
-        | {
-            firstname: string;
-            lastname: string;
-            phone: string;
-            citizenid: string;
-            rank: string;
-            callsign: string;
-            vehicle: boolean;
-            duty: boolean;
-            radio: number;
-            assignment: { message: string; street: string };
-          }
-      )[]
-    ) => {
-      data.playerData.set(datas);
+    setData: (datas) => {
+      data.playerData.update((e) => {
+        console.table(datas);
+        e = datas;
+        e = e;
+        return e;
+      });
     },
     updatePlayerData: (
       type: string,
@@ -350,12 +515,16 @@ const store = () => {
       data.playerData.update((e) => {
         const _d = e.findIndex((d) => d.citizenid === dat.citizenid);
         if (type === 'add') {
-          if (e.some((s) => s.citizenid === dat.citizenid)) return;
-          e = [...e, dat];
+          console.table(dat);
+          // if (e.some((s) => s.citizenid === dat.citizenid)) return;
+          e.push(dat);
+          e = e;
+          return e;
         } else {
           e.splice(_d, 1);
+          e = e;
+          return e;
         }
-        return e;
       });
     },
     updateDuty: (cid: string, duty: boolean) => {

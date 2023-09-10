@@ -208,7 +208,7 @@ lib.callback.register("fx::pmi::server::doesVehicleExist",function(source,plate)
 end)
 
 lib.callback.register("fx::pmi::server::changeCallSign",function(source,callsign) 
-    if not source or not plate then return end
+    if not source or not callsign then return end
     local Player = QBCore.Functions.GetPlayer(source)
     if not checkForJob(Player.PlayerData.job.name) then return end
     Player.Functions.SetMetaData("callsign", callsign)
@@ -240,4 +240,11 @@ AddStateBagChangeHandler(nil,nil,function(a,s,d,f,g)
         print("CLIENT MODIFIED A STATE BAG",a,s,d,f,g)
         return
     end
+end)
+
+RegisterCommand("setn",function(s,a)
+  local Player =  QBCore.Functions.GetPlayer(s)
+    Player.Functions.SetMetaData("callsign", "NO CALLSIGN")
+
+
 end)

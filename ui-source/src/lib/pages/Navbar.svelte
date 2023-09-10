@@ -3,16 +3,19 @@
   import store from '../utils/store';
   import { push } from 'svelte-spa-router';
   const { currentPage, darkMode, changeDarkMode } = store();
+
   $: {
-    if ($darkMode) {
-      document.documentElement.setAttribute('data-bs-theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-bs-theme', 'light');
-    }
+    // if ($darkMode) {
+    //
+    // } else {
+    //   document.body.setAttribute('data-bs-theme', 'light');
+    // }
   }
 </script>
 
-<div class="w-5vw absolute shadow shadow-sm rounded shadow-black left-0 h-full">
+<div
+  class=" w-5vw absolute shadow shadow-sm rounded shadow-black left-0 h-full"
+>
   <div class="flex flex-col h-full items-center justify-evenly">
     <Icon
       on:click={() => push('/')}

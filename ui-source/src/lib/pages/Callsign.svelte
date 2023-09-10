@@ -1,14 +1,16 @@
 <script lang="ts">
   import { Button, FormInput, Modal, ModalBody, ModalFooter } from 'yesvelte';
   import store, { myData } from '../utils/store';
+  import { fetchNui } from '../utils/fetchNui';
   export let open: boolean = false;
   let callsign = '';
-  const updateCallsigns = () => {
+  const updateCallsigns = async () => {
     if (callsign.length >= 2) {
+      const _d = await fetchNui('callsignUpdater', { callsign: callsign });
+      console.log('CALLSIGN AWAIT: ', _d);
       $myData.callsign = callsign;
     }
   };
-
   $: d = callsign.length <= 3 || callsign == '';
 </script>
 

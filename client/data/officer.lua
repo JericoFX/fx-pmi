@@ -4,7 +4,7 @@ local Officers = {}
 ---@param state? boolean - State of the Duty
 function Officers.changeDuty(state)
     if type(state) ~= "boolean" then return nil end
-    TriggerServerEvent("fx::pmi::server::updatePmiInformation","duty",state)
+    TriggerServerEvent("fx::pmi::server::updatePmiInformation", "duty", state)
     TriggerServerEvent('QBCore:ToggleDuty')
 end
 
@@ -12,13 +12,13 @@ end
 ---@param id (string|number) - Player ID
 function Officers.getPlayerInformation(id)
     if not id then return end
-    local status = lib.callback.await("fx::pmi::server::getPlayerInfo",nil,id)
+    local status = lib.callback.await("fx::pmi::server::getPlayerInfo", nil, id)
     return status
 end
 
 function Officers.changeCallSign(callsign)
     if not callsign then return false end
-local val = lib.callback.await("fx::pmi::server::changeCallSign",nil,tostring(callsign))
+    local val = lib.callback.await("fx::pmi::server::changeCallSign", nil, tostring(callsign))
     return val
 end
 

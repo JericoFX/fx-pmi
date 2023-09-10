@@ -7,7 +7,7 @@ require "client.data.handlers" ()
 --- Function to open the NUI.
 ---@param bool boolean - Function to open the NUI and set the focus.
 local function openNUI(bool)
-    local job,charinfo,citizenid in QBCore.Functions.GetPlayerData()
+    local job,charinfo,citizenid,metadata in QBCore.Functions.GetPlayerData()
     SetNuiFocus(bool,bool)
     SendNUIMessage({
         action = "openNUI",
@@ -19,7 +19,8 @@ local function openNUI(bool)
                 lastname = charinfo.lastname,
                 citizenid = citizenid,
                 rank = job.grade.name,
-                duty = job.onduty
+                duty = job.onduty,
+                callsign = metadata.callsign == "NO CALLSIGN" and nil or metadata.callsign
             } 
     }})
 end
@@ -61,8 +62,8 @@ local function searchVehicle(data, cb)
 end
 
 local function callsignUpdater(data, cb)
-    local callsign in data
-    local _call = Player.changeCallSign(callsign)
+    print("CALLSIGN IS: ",data.callsign)
+    local _call = Player.changeCallSign(data.callsign)
     cb(_call)
 end
 
@@ -85,3 +86,4 @@ RegisterNUICallback("closeNUI",closeNUI)
 RegisterNUICallback("changeDuty",changeDuty)
 RegisterNUICallback("searchVehicle",searchVehicle)
 RegisterNUICallback("getPlayerInfo",getPlayerInfo)
+RegisterNUICallback("callsignUpdater",callsignUpdater)

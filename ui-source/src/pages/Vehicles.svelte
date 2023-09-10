@@ -16,7 +16,7 @@
   } from 'yesvelte';
 </script>
 
-<section class="w-full h-full relative">
+<section class=" w-full h-full relative">
   <El tag="h1" class=" text-2vw w-full">Vehicles</El>
   <El class="w-full flex justify-center items-center">
     <FormInput class="w-100">
@@ -24,8 +24,8 @@
     </FormInput>
   </El>
   <Fieldset class="w-full h-85% absolute flex-center">
-    <Card class="w-full shadow-md shadow-black">
-      <CardHeader class="text-center w-full">Vehicle Information</CardHeader>
+    <Card class=" w-full  shadow-md shadow-black">
+      <CardHeader class="text-center w-full ">Vehicle Information</CardHeader>
       <CardBody>
         <El row>
           <FormInput readonly col="12" label="Vehicle Owner:" />

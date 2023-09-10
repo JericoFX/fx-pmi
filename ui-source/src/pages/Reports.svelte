@@ -11,15 +11,15 @@
     ButtonGroup,
     Button,
   } from 'yesvelte';
-  import store,{myData} from '../lib/utils/store';
+  import store, { myData } from '../lib/utils/store';
   const { reports, markReport } = store();
 </script>
 
-<section class="w-full h-full relative overflow-scroll">
+<section data-bs-theme="dark" class="w-full h-full relative overflow-scroll">
   <El tag="h1" class=" text-2vw w-full">Reports</El>
   <!-- <Fieldset class="h-full"> -->
   <Accordions>
-    {#each $reports as data  (data.id)}
+    {#each $reports as data (data.id)}
       <Accordion>
         <AccordionHeader
           >CODE: <span class="ml-3"

@@ -14,7 +14,7 @@
     ButtonGroup,
   } from 'yesvelte';
 
-  import store from '../lib/utils/store';
+  import store, { playerDatas } from '../lib/utils/store';
   import Modals from '../lib/pages/Modals.svelte';
   import Popover from '../lib/pages/Popover.svelte';
   const { playerData } = store();
@@ -34,9 +34,9 @@
   };
 </script>
 
-<main class="w-full h-full relative rounded overflow-scroll">
-  <El tag="h1" class=" text-2vw w-full">Officers</El>
-  <Table striped hover>
+<main class="w-full h-full relative rounded overflow-scroll containers">
+  <El tag="h1" class=" text-2vw  w-full">Officers</El>
+  <Table hover>
     <TableHead>
       <TableRow>
         <TableCell>Duty</TableCell>
@@ -50,7 +50,7 @@
       </TableRow>
     </TableHead>
     <TableBody>
-      {#each $playerData as data (data.citizenid)}
+      {#each $playerDatas as data}
         <TableRow>
           <TableCell
             >{#if data.duty}
