@@ -17,6 +17,7 @@
   import store, { playerDatas } from '../lib/utils/store';
   import Modals from '../lib/pages/Modals.svelte';
   import Popover from '../lib/pages/Popover.svelte';
+  import { fetchNui } from '../lib/utils/fetchNui';
   const { playerData } = store();
 
   const openModal = (data: boolean | { plate: string; vehicle: string }) => {
@@ -83,7 +84,10 @@
                   value={data.vehicle.plate}
                 />
                 <ButtonGroup>
-                  <Button>
+                  <Button
+                    on:click={() =>
+                      fetchNui('locateVehicle', { plate: data.vehicle.plate })}
+                  >
                     <slot name="end">
                       <Icon name="gps" />
                     </slot>

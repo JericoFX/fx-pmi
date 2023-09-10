@@ -50,10 +50,10 @@ return function()
 
     RegisterNetEvent("fx::pmi::client::updatePmiInformation")
     Eventos[#Eventos + 1] = AddEventHandler("fx::pmi::client::updatePmiInformation", function(information, data)
+        if GetInvokingResource() then return end
         Table.updateTableIndexValue(data.citizenid, information, data)
         if information == "vehicle" then
             if type(data) == "table" and data.data then
-                print(data.data.vehicle, data.data.plate)
                 SendNUIMessage({
                     action = information,
                     data = {
@@ -73,6 +73,15 @@ return function()
                     }
                 })
             end
+        elseif information == "duty" then
+            SendNUIMessage({
+                action = information,
+                data = {
+                    info = "duty",
+                    citizenid = data.citizenid,
+                    duty = data.duty
+                }
+            })
         end
     end)
 

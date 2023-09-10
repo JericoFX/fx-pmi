@@ -6,8 +6,9 @@
   import store, { myData, playerDatas } from './lib/utils/store';
   import type { MyData } from './lib/utils/types';
   import { useNuiEvent } from './lib/utils/useNuiEvent';
+  import { fetchNui } from './lib/utils/fetchNui';
   const { darkMode, setData, updatePlayerData } = store();
-  let opens = true;
+  let opens = false;
   let forceOpenModal = false;
   let hasCssLoaded = false;
   useNuiEvent(
@@ -40,21 +41,71 @@
     $playerDatas = [...$playerDatas, data];
     // updatePlayerData(type, data);
   });
+
+  useNuiEvent<{
+    type: string;
+    info: string;
+    citizenid: string;
+    vehicle: string;
+    plate: string;
+  }>('vehicle', ({ info, citizenid, vehicle, plate }) => {
+    const s = $playerDatas.findIndex((e) => e.citizenid === citizenid);
+    console.log('INDICE', s);
+    //const _d = $playerDatas.filter((e) => e.citizenid === citizenid)[0];
+    if (info === 'add' && s !== -1) {
+      $playerDatas[s] = {
+        ...$playerDatas[s],
+        vehicle: { vehicle: vehicle, plate: plate },
+      };
+      $playerDatas = $playerDatas;
+    } else {
+      $playerDatas[s] = {
+        ...$playerDatas[s],
+        vehicle: false,
+      };
+      $playerDatas = $playerDatas;
+    }
+  });
+
+  useNuiEvent<{
+    type: string;
+    info: string;
+    citizenid: string;
+    duty: boolean;
+  }>('duty', ({ info, citizenid, duty }) => {
+    const s = $playerDatas.findIndex((e) => e.citizenid === citizenid);
+    if (s === -1) return;
+    $playerDatas[s] = {
+      ...$playerDatas[s],
+      duty: duty,
+    };
+    $playerDatas = $playerDatas;
+  });
+
   function sheetLoaded() {
-    console.log('L)OADED');
     hasCssLoaded = true;
   }
+
   $: containerProps = {
     'data-bs-theme': $darkMode ? 'dark' : 'light',
     'data-theme': $darkMode ? 'dark' : 'light',
   };
+
   onMount(() => {
     Object.keys(containerProps).map((key) => {
       document.body.setAttribute(key, containerProps[key]);
     });
   });
+  function handleKeydown(event: { keyCode: number }) {
+    if (event.keyCode === 27) {
+      opens = false;
+      fetchNui('closeNUI', {});
+    }
+    1;
+  }
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
 <svelte:head>
   <link
     rel="stylesheet"

@@ -61,6 +61,11 @@ local function searchVehicle(data, cb)
     cb(_veh)
 end
 
+local function locateVehicle(data, cb)
+    if not data.plate then return cb(false) end
+    local _veh = Vehicle.getVehicleCoordinate(data.plate,true)
+    cb(_veh)
+end
 local function callsignUpdater(data, cb)
     print("CALLSIGN IS: ",data.callsign)
     local _call = Player.changeCallSign(data.callsign)
@@ -87,3 +92,4 @@ RegisterNUICallback("changeDuty",changeDuty)
 RegisterNUICallback("searchVehicle",searchVehicle)
 RegisterNUICallback("getPlayerInfo",getPlayerInfo)
 RegisterNUICallback("callsignUpdater",callsignUpdater)
+RegisterNUICallback("locateVehicle",locateVehicle)

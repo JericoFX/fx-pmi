@@ -34,7 +34,6 @@ end
 ---@return ({x:number,y:number,z:number}|boolean) - Vector3 of the entity
 function Vehicles.getVehicleCoordinate(plate, blip)
     local _coords = Vehicles.grabEntityByPlate(plate)
-    print("Coordenadas", _coords)
     if blip then
         local _blip = AddBlipForCoord(_coords.x, _coords.y, _coords.z)
         SetBlipRoute(_blip, true)
